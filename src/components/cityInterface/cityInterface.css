@@ -1,7 +1,8 @@
 .city-container {
-  border: 1px solid black;
 }
 
 button {
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  width: 100px;
 }

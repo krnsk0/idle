@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import './resourceView.css';
 
 const resources = [
   {
@@ -17,9 +18,9 @@ const resources = [
 
 const ResourceView: FC = () => {
   return (
-    <div>
+    <div className="resource-container">
       {resources.map((resource) => (
-        <div key={resource.name}>
+        <div key={resource.name} className="resource-row">
           <span>{resource.name}</span>
           <span>{resource.qty}</span>
         </div>
