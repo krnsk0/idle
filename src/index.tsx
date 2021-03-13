@@ -2,7 +2,7 @@ import React, { ReactNode } from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app/app';
 import './index.css';
-import { RootStoreProvider } from './store/rootStore';
+import { RootStoreProvider } from './store/rootStoreContext';
 
 ReactDOM.render(
   <React.StrictMode>
