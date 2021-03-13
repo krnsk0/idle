@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
-import type { BuildingNames, ResourceNames, s } from '../../types';
-import { initialBuildings } from './initialBuildings';
+import type { s } from '../../types';
+import { BuildingNames, ResourceNames, initialProducts } from '../../gameData';
 import type { RootStore } from '../rootStore';
 
 type Product = {
@@ -8,16 +8,35 @@ type Product = {
   quantity: s.UnitsPerSecond;
 };
 
-export type Building = {
-  name: BuildingNames;
-  quantity: s.UnitsPerSecond;
+export class Building {
+  quantity: s.Units = 0;
   products: Product[];
-};
+
+  constructor(readonly name: BuildingNames, readonly root: RootStore) {
+    this.products = initialProducts[name];
+
+    makeObservable(this, {
+      quantity: observable,
+    });
+  }
+
+  getProductionPerSecond(resourceName: ResourceNames): s.UnitsPerSecond {
+    return this.products.reduce((acc, product) => {
+      const production = product.name === resourceName ? product.quantity : 0;
+      return acc + production;
+    }, 0);
+  }
+}
 
 export class BuildingStore {
-  readonly buildings: Building[] = initialBuildings;
+  readonly buildings: Building[] = [];
 
   constructor(readonly root: RootStore) {
+    // initialize buildings
+    Object.values(BuildingNames).forEach((buildingName) => {
+      this.buildings.push(new Building(buildingName, this.root));
+    });
+
     makeObservable(this, {
       buildings: observable,
       tick: action,
@@ -32,12 +51,7 @@ export class BuildingStore {
   getProductionPerSecond(resourceName: ResourceNames): s.UnitsPerSecond {
     return this.buildings.reduce(
       (outerSum, building) =>
-        outerSum +
-        building.products.reduce((innerSum, product) => {
-          const production =
-            product.name === resourceName ? product.quantity : 0;
-          return innerSum + production;
-        }, 0),
+        outerSum + building.getProductionPerSecond(resourceName),
       0
     );
   }

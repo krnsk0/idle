@@ -1,5 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
-import { ResourceNames, s } from '../../types';
+import { ResourceNames } from '../../gameData';
+import type { s } from '../../types';
 import type { RootStore } from '../rootStore';
 
 export class Resource {
