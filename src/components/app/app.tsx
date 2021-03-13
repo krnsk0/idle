@@ -4,6 +4,7 @@ import type { s } from '../../types';
 import { useRootStore } from '../../store/rootStoreContext';
 import CityInterface from '../cityInterface/cityInterface';
 import ResourceView from '../resourceView/resourceView';
+
 import './app.css';
 
 const App: FC = observer(() => {

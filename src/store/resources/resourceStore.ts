@@ -5,7 +5,7 @@ import type { RootStore } from '../rootStore';
 
 export type Resource = {
   name: ResourceNames;
-  quantity: number;
+  quantity: s.Units;
 };
 
 export class ResourceStore {
@@ -21,5 +21,12 @@ export class ResourceStore {
     });
   }
 
-  tick(delta: s.Milliseconds): void {}
+  tick(delta: s.Milliseconds): void {
+    this.resources.forEach((resource) => {
+      const perSecond = this.root.buildingStore.getProductionPerSecond(
+        resource.name
+      );
+      resource.quantity += perSecond * (delta / 1000);
+    });
+  }
 }
