@@ -1,3 +1,5 @@
+import type { s } from './types';
+
 export enum ResourceNames {
   grain = 'grain',
   minerals = 'minerals',
@@ -10,23 +12,28 @@ export enum BuildingNames {
   lab = 'lab',
 }
 
-export const initialProducts = {
+export const initialBuildingProducts: {
+  [key in BuildingNames]: {
+    resourceName: ResourceNames;
+    quantityPerSecond: s.UnitsPerSecond;
+  }[];
+} = {
   [BuildingNames.farm]: [
     {
-      name: ResourceNames.grain,
-      quantity: 1,
+      resourceName: ResourceNames.grain,
+      quantityPerSecond: 1,
     },
   ],
   [BuildingNames.mine]: [
     {
-      name: ResourceNames.minerals,
-      quantity: 1,
+      resourceName: ResourceNames.minerals,
+      quantityPerSecond: 1,
     },
   ],
   [BuildingNames.lab]: [
     {
-      name: ResourceNames.knowledge,
-      quantity: 1,
+      resourceName: ResourceNames.knowledge,
+      quantityPerSecond: 1,
     },
   ],
 };

@@ -7,5 +7,5 @@
 .resource-row {
   display: flex;
   justify-content: space-between;
-  width: 140px;
+  width: 200px;
 }
