@@ -1,17 +1,12 @@
 import { action, makeObservable, observable } from 'mobx';
-import { ResourceNames, s } from '../types';
-import type { RootStore } from './rootStore';
+import type { ResourceNames, s } from '../../types';
+import { initialResources } from './initialResources';
+import type { RootStore } from '../rootStore';
 
-type Resource = {
+export type Resource = {
   name: ResourceNames;
   quantity: number;
 };
-
-const initialResources: Resource[] = [
-  { name: ResourceNames.grain, quantity: 0 },
-  { name: ResourceNames.minerals, quantity: 0 },
-  { name: ResourceNames.knowledge, quantity: 0 },
-];
 
 export class ResourceStore {
   root: RootStore;

@@ -1,5 +1,5 @@
-import { BuildingStore } from './buildingStore';
-import { ResourceStore } from './resourceStore';
+import { BuildingStore } from './buildings/buildingStore';
+import { ResourceStore } from './resources/resourceStore';
 import type { s } from '../types';
 
 export class RootStore {
