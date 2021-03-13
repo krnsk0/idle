@@ -15,12 +15,9 @@ export type Building = {
 };
 
 export class BuildingStore {
-  root: RootStore;
-  buildings: Building[] = initialBuildings;
+  readonly buildings: Building[] = initialBuildings;
 
-  constructor(root: RootStore) {
-    this.root = root;
-
+  constructor(readonly root: RootStore) {
     makeObservable(this, {
       buildings: observable,
       tick: action,

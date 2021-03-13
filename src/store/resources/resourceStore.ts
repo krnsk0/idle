@@ -1,19 +1,31 @@
 import { action, makeObservable, observable } from 'mobx';
-import type { ResourceNames, s } from '../../types';
-import { initialResources } from './initialResources';
+import { ResourceNames, s } from '../../types';
 import type { RootStore } from '../rootStore';
 
-export type Resource = {
-  name: ResourceNames;
-  quantity: s.Units;
-};
+export class Resource {
+  quantity: s.Units = 0;
+
+  constructor(readonly name: ResourceNames, readonly root: RootStore) {
+    makeObservable(this, {
+      quantity: observable,
+      tick: action,
+    });
+  }
+
+  tick(delta: s.Milliseconds): void {
+    const perSecond = this.root.buildingStore.getProductionPerSecond(this.name);
+    this.quantity += perSecond * (delta / 1000);
+  }
+}
 
 export class ResourceStore {
-  root: RootStore;
-  resources: Resource[] = initialResources;
+  readonly resources: Resource[] = [];
 
-  constructor(root: RootStore) {
-    this.root = root;
+  constructor(readonly root: RootStore) {
+    // initialize all resources
+    Object.values(ResourceNames).forEach((resourceName) => {
+      this.resources.push(new Resource(resourceName, this.root));
+    });
 
     makeObservable(this, {
       resources: observable,
@@ -23,10 +35,7 @@ export class ResourceStore {
 
   tick(delta: s.Milliseconds): void {
     this.resources.forEach((resource) => {
-      const perSecond = this.root.buildingStore.getProductionPerSecond(
-        resource.name
-      );
-      resource.quantity += perSecond * (delta / 1000);
+      resource.tick(delta);
     });
   }
 }
