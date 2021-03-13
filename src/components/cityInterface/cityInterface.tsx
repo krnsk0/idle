@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useRootStore } from '../../store/rootStore';
+import { useRootStore } from '../../store/rootStoreContext';
 import './cityInterface.css';
 
 const CityInterface: FC = observer(() => {

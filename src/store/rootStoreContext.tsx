@@ -1,16 +1,5 @@
-import { BuildingStore } from './buildingStore';
-import { ResourceStore } from './resourceStore';
 import React, { createContext, ReactNode, useContext } from 'react';
-
-export class RootStore {
-  resourceStore: ResourceStore;
-  buildingStore: BuildingStore;
-
-  constructor() {
-    this.resourceStore = new ResourceStore(this);
-    this.buildingStore = new BuildingStore(this);
-  }
-}
+import { RootStore } from './rootStore';
 
 let store: RootStore;
 const StoreContext = createContext<RootStore | undefined>(undefined);

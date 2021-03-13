@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
-import { useRootStore } from '../../store/rootStore';
+import { useRootStore } from '../../store/rootStoreContext';
 import './resourceView.css';
 
 const ResourceView: FC = observer(() => {
