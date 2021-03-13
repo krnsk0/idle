@@ -1,16 +1,16 @@
 import { action, makeObservable, observable } from 'mobx';
-import type { s } from 'src/types';
+import { ResourceNames, s } from '../types';
 import type { RootStore } from './rootStore';
 
 type Resource = {
-  name: string;
+  name: ResourceNames;
   quantity: number;
 };
 
 const initialResources: Resource[] = [
-  { name: 'grain', quantity: 0 },
-  { name: 'minerals', quantity: 0 },
-  { name: 'knowledge', quantity: 0 },
+  { name: ResourceNames.grain, quantity: 0 },
+  { name: ResourceNames.minerals, quantity: 0 },
+  { name: ResourceNames.knowledge, quantity: 0 },
 ];
 
 export class ResourceStore {

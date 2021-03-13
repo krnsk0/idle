@@ -1,45 +1,45 @@
 import { action, makeObservable, observable } from 'mobx';
-import type { s } from 'src/types';
+import { BuildingNames, ResourceNames, s } from '../types';
 import type { RootStore } from './rootStore';
 
 type BuildingProduct = {
-  name: string;
+  name: ResourceNames;
   quantity: number;
 };
 
 type Building = {
-  name: string;
+  name: BuildingNames;
   quantity: number;
   products: BuildingProduct[];
 };
 
 const initialBuildings: Building[] = [
   {
-    name: 'farm',
+    name: BuildingNames.farm,
     quantity: 5,
     products: [
       {
-        name: 'grain',
+        name: ResourceNames.grain,
         quantity: 1,
       },
     ],
   },
   {
-    name: 'mine',
+    name: BuildingNames.mine,
     quantity: 1,
     products: [
       {
-        name: 'minerals',
+        name: ResourceNames.minerals,
         quantity: 1,
       },
     ],
   },
   {
-    name: 'lab',
+    name: BuildingNames.lab,
     quantity: 2,
     products: [
       {
-        name: 'knowledge',
+        name: ResourceNames.knowledge,
         quantity: 1,
       },
     ],
