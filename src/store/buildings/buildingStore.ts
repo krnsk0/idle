@@ -1,8 +1,7 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import type { BuildingNames, ResourceNames, s } from '../../types';
 import { initialBuildings } from './initialBuildings';
 import type { RootStore } from '../rootStore';
-import { computedFn } from 'mobx-utils';
 
 type Product = {
   name: ResourceNames;
@@ -33,12 +32,13 @@ export class BuildingStore {
   /**
    * Calculates production per second of a resource
    */
-  getProductionPerSecond(resource: ResourceNames): s.UnitsPerSecond {
+  getProductionPerSecond(resourceName: ResourceNames): s.UnitsPerSecond {
     return this.buildings.reduce(
       (outerSum, building) =>
         outerSum +
         building.products.reduce((innerSum, product) => {
-          const production = product.name === resource ? product.quantity : 0;
+          const production =
+            product.name === resourceName ? product.quantity : 0;
           return innerSum + production;
         }, 0),
       0

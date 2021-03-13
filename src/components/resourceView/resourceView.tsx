@@ -11,7 +11,7 @@ const ResourceView: FC = observer(() => {
       {resourceStore.resources.map((resource) => (
         <div key={resource.name} className="resource-row">
           <span>{resource.name}</span>
-          <span>{resource.quantity}</span>
+          <span>{resource.quantity.toFixed(2)}</span>
         </div>
       ))}
     </div>
