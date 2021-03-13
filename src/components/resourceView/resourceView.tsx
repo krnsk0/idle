@@ -1,32 +1,21 @@
+import { observer } from 'mobx-react-lite';
 import React, { FC } from 'react';
+import { useRootStore } from '../../store/rootStore';
 import './resourceView.css';
 
-const resources = [
-  {
-    name: 'grain',
-    qty: 5,
-  },
-  {
-    name: 'minerals',
-    qty: 15,
-  },
-  {
-    name: 'knowledge',
-    qty: 1,
-  },
-];
+const ResourceView: FC = observer(() => {
+  const { resourceStore } = useRootStore();
 
-const ResourceView: FC = () => {
   return (
     <div className="resource-container">
-      {resources.map((resource) => (
+      {resourceStore.resources.map((resource) => (
         <div key={resource.name} className="resource-row">
           <span>{resource.name}</span>
-          <span>{resource.qty}</span>
+          <span>{resource.quantity}</span>
         </div>
       ))}
     </div>
   );
-};
+});
 
 export default ResourceView;

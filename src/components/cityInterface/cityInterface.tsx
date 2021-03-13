@@ -1,32 +1,21 @@
 import React, { FC } from 'react';
+import { observer } from 'mobx-react-lite';
+import { useRootStore } from '../../store/rootStore';
 import './cityInterface.css';
 
-const buildings = [
-  {
-    name: 'farm',
-    qty: 2,
-  },
-  {
-    name: 'mine',
-    qty: 5,
-  },
-  {
-    name: 'lab',
-    qty: 1,
-  },
-];
+const CityInterface: FC = observer(() => {
+  const { buildingStore } = useRootStore();
 
-const CityInterface: FC = () => {
   return (
     <div className="city-container">
-      {buildings.map((building) => (
+      {buildingStore.buildings.map((building) => (
         <button key={building.name} type="button">
           <span>{building.name}</span>
-          <span>{building.qty}</span>
+          <span>{building.quantity}</span>
         </button>
       ))}
     </div>
   );
-};
+});
 
 export default CityInterface;
