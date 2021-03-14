@@ -18,10 +18,13 @@ export class Resource {
     this.quantity += this.productionPerSecond * (delta / 1000);
   }
 
+  /**
+   * How much of this resource is produced per second?
+   */
   get productionPerSecond(): s.UnitsPerSecond {
     return this.root.buildingStore.buildings.reduce(
       (outerSum, building) =>
-        outerSum + building.getProductionPerSecond(this.name),
+        outerSum + building.productionPerSecond(this.name),
       0
     );
   }
