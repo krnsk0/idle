@@ -9,8 +9,8 @@ const ResourceView: FC = observer(() => {
   return (
     <div className="resource-container">
       {resourceStore.resources.map((resource) => (
-        <div key={resource.name} className="resource-row">
-          <span>{resource.name}</span>
+        <div key={resource.resourceName} className="resource-row">
+          <span>{resource.resourceName}</span>
           <span>{resource.productionPerSecond}/sec</span>
           <span>{resource.quantity.toFixed(2)}</span>
         </div>

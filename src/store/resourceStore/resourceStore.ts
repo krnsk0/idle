@@ -1,11 +1,12 @@
 import { action, makeObservable, observable } from 'mobx';
+import { list, object, serializable } from 'serializr';
 import { ResourceNames } from '../../gameData';
 import type { s } from '../../types';
 import type { RootStore } from '../rootStore';
 import { Resource } from './resource';
 
 export class ResourceStore {
-  readonly resources: Resource[] = [];
+  @serializable(list(object(Resource))) readonly resources: Resource[] = [];
 
   constructor(readonly root: RootStore) {
     // initialize all resources

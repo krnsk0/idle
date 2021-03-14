@@ -1,5 +1,6 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import { computedFn } from 'mobx-utils';
+import { list, object, serializable } from 'serializr';
 import {
   BuildingNames,
   ResourceNames,
@@ -10,12 +11,17 @@ import type { RootStore } from '../rootStore';
 import { BuildingProduct } from './buildingProduct';
 
 export class Building {
-  quantity: s.Units = 1;
-  products: BuildingProduct[] = [];
+  @serializable quantity: s.Units = 1;
+  @serializable(list(object(BuildingProduct))) products: BuildingProduct[] = [];
+  @serializable buildingName: BuildingNames;
 
-  constructor(readonly root: RootStore, readonly name: BuildingNames) {
+  constructor(readonly root: RootStore, buildingName: BuildingNames) {
+    // initializations
+    this.buildingName = buildingName;
+
+    // initialize buildingProducts from game data
     initialBuildingProducts[
-      name
+      buildingName
     ].forEach(({ resourceName, quantityPerSecond }) =>
       this.products.push(
         new BuildingProduct(this.root, resourceName, quantityPerSecond)

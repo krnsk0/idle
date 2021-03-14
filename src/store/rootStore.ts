@@ -1,5 +1,11 @@
 import { action, configure, makeObservable, observable } from 'mobx';
-
+import {
+  serialize,
+  createModelSchema,
+  serializable,
+  reference,
+  object,
+} from 'serializr';
 import { BuildingStore } from './buildingStore/buildingStore';
 import { ResourceStore } from './resourceStore/resourceStore';
 import type { s } from '../types';
@@ -17,12 +23,14 @@ configure({
  */
 export class RootStore {
   lastTimestamp: s.Milliseconds;
+  @serializable
   lastSaved: s.Milliseconds;
+  @serializable
   saveInterval: s.Milliseconds = 1000;
 
   // stores
-  buildingStore: BuildingStore;
-  resourceStore: ResourceStore;
+  @serializable(object(BuildingStore)) buildingStore: BuildingStore;
+  @serializable(object(ResourceStore)) resourceStore: ResourceStore;
 
   constructor() {
     // initialize the substores
@@ -55,6 +63,7 @@ export class RootStore {
   }
 
   save(): void {
-    console.log('saving');
+    const json = serialize(this);
+    console.log(json);
   }
 }

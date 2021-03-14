@@ -10,11 +10,11 @@ const CityInterface: FC = observer(() => {
     <div className="city-container">
       {buildingStore.buildings.map((building) => (
         <button
-          key={building.name}
+          key={building.buildingName}
           type="button"
           onClick={() => building.buy(1)}
         >
-          <span>{building.name}</span>
+          <span>{building.buildingName}</span>
           <span>{building.quantity}</span>
         </button>
       ))}

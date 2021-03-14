@@ -1,14 +1,23 @@
 import { makeObservable, observable } from 'mobx';
+import {} from 'nanoid';
+import { serializable } from 'serializr';
 import type { ResourceNames } from '../../gameData';
 import type { s } from '../../types';
 import type { RootStore } from '../rootStore';
 
 export class BuildingProduct {
+  @serializable resourceName: ResourceNames;
+  @serializable quantityPerSecond: s.UnitsPerSecond;
+
   constructor(
     readonly root: RootStore,
-    readonly resourceName: ResourceNames,
-    readonly quantityPerSecond: s.UnitsPerSecond
+    resourceName: ResourceNames,
+    quantityPerSecond: s.UnitsPerSecond
   ) {
+    // initialize
+    this.resourceName = resourceName;
+    this.quantityPerSecond = quantityPerSecond;
+
     makeObservable(this, {
       quantityPerSecond: observable,
     });
