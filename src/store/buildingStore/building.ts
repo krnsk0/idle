@@ -6,18 +6,7 @@ import {
 } from '../../gameData';
 import type { s } from '../../types';
 import type { RootStore } from '../rootStore';
-
-class BuildingProduct {
-  constructor(
-    readonly root: RootStore,
-    readonly resourceName: ResourceNames,
-    readonly quantityPerSecond: s.UnitsPerSecond
-  ) {
-    makeObservable(this, {
-      quantityPerSecond: observable,
-    });
-  }
-}
+import { BuildingProduct } from './buildingProduct';
 
 export class Building {
   quantity: s.Units = 1;
