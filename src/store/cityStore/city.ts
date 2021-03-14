@@ -56,8 +56,9 @@ export class City {
 
     // load saved resources
     this.resources.map((resource) => {
+      console.log('loading resource: ', resource.resourceName);
       const savedResource = saveData.resources.find(
-        (savedResource) => (savedResource.resourceName = resource.resourceName)
+        (savedResource) => savedResource.resourceName === resource.resourceName
       );
       if (savedResource) {
         resource.load(savedResource);
@@ -67,7 +68,7 @@ export class City {
     // load saved buildings
     this.buildings.map((building) => {
       const savedbuilding = saveData.buildings.find(
-        (savedbuilding) => (savedbuilding.buildingName = building.buildingName)
+        (savedbuilding) => savedbuilding.buildingName === building.buildingName
       );
       if (savedbuilding) {
         building.load(savedbuilding);

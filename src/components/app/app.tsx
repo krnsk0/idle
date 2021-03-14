@@ -15,7 +15,6 @@ const App: FC = observer(() => {
 
   useEffect(() => {
     gameLoop(0);
-    rootStore.cityStore.addCity();
   }, []);
 
   return (
@@ -27,6 +26,9 @@ const App: FC = observer(() => {
       </div>
       <button type="button" onClick={() => rootStore.cityStore.addCity()}>
         add city
+      </button>
+      <button type="button" onClick={() => rootStore.clearSave()}>
+        clear save
       </button>
     </div>
   );

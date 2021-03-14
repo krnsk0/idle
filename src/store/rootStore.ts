@@ -39,7 +39,10 @@ export class RootStore {
       lastTimestamp: observable,
       tick: action,
       serialize: computed,
+      load: action,
     });
+
+    this.load();
   }
 
   tick(now: s.Milliseconds): void {
@@ -68,6 +71,7 @@ export class RootStore {
    * Serialize and save; tell caller if succeeded
    */
   save(): boolean {
+    console.log('saved');
     try {
       window.localStorage.setItem('save', JSON.stringify(this.serialize));
       return true;
@@ -78,6 +82,7 @@ export class RootStore {
   }
 
   load(): boolean {
+    console.log('loading save');
     try {
       const saveString = window.localStorage.getItem('save');
       if (saveString) {
@@ -90,6 +95,17 @@ export class RootStore {
 
         return true;
       }
+    } catch (e) {
+      console.log(e);
+    }
+    return false;
+  }
+
+  clearSave(): boolean {
+    try {
+      console.log('clearing save');
+      window.localStorage.removeItem('save');
+      this.load();
     } catch (e) {
       console.log(e);
     }

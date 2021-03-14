@@ -43,6 +43,10 @@ export class CityStore {
   }
 
   load(saveData: tCityStoreSave): void {
+    // clear existing cities
+    this.cities = [];
+
+    // load cities from save
     saveData.cities.forEach((citySaveData) => {
       const newCity = new City(this.root);
       this.cities.push(newCity);
