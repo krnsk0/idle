@@ -36,7 +36,8 @@ export class Resource {
   }
 
   tick(delta: s.Milliseconds): void {
-    this.quantity += this.productionPerSecond * (delta / 1000);
+    const newProduction = this.productionPerSecond * (delta / 1000);
+    this.quantity += newProduction;
   }
 
   /**
@@ -60,7 +61,9 @@ export class Resource {
   }
 
   load(saveData: tResourceSave): void {
-    console.log(`setting ${saveData.resourceName} to ${saveData.quantity}`);
+    console.log(
+      `setting ${saveData.resourceName} to ${saveData.quantity} in ${this.resourceName}`
+    );
 
     this.quantity = saveData.quantity;
     this.resourceName = saveData.resourceName;

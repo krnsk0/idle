@@ -89,9 +89,12 @@ export class RootStore {
         const saveData = <tRootSave>JSON.parse(saveString);
 
         // parse save and populate
-        this.lastTimestamp = saveData.lastTimestamp;
         this.saveInterval = saveData.saveInterval;
         this.cityStore.load(saveData.cityStore);
+
+        // run missing time
+        // // this.lastTimestamp = saveData.lastTimestamp;
+        // this.tick(performance.now());
 
         return true;
       }

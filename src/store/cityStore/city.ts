@@ -54,18 +54,6 @@ export class City {
 
   load(saveData: tCitySave): void {
     this.id = saveData.id;
-
-    // load saved resources
-    this.resources.map((resource) => {
-      console.log('loading resource: ', resource.resourceName);
-      const savedResource = saveData.resources.find(
-        (savedResource) => savedResource.resourceName === resource.resourceName
-      );
-      if (savedResource) {
-        resource.load(savedResource);
-      }
-    });
-
     // load saved buildings
     this.buildings.map((building) => {
       const savedbuilding = saveData.buildings.find(
@@ -73,6 +61,16 @@ export class City {
       );
       if (savedbuilding) {
         building.load(savedbuilding);
+      }
+    });
+
+    // load saved resources
+    this.resources.map((resource) => {
+      const savedResource = saveData.resources.find(
+        (savedResource) => savedResource.resourceName === resource.resourceName
+      );
+      if (savedResource) {
+        resource.load(savedResource);
       }
     });
   }
