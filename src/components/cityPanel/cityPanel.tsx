@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useRootStore } from '../../store/rootStoreContext';
 import type { s } from '../../semanticTypes';
-import './cityPanel.css';
+import styles from './cityPanel.module.css';
 
 type CityPanelProps = {
   id: s.UUID;
@@ -13,7 +13,7 @@ const CityPanel: FC<CityPanelProps> = observer(({ id }) => {
   const city = cityStore.getCityById(id);
 
   return (
-    <div className="city-container">
+    <div className={styles['city-container']}>
       <div>{id}</div>
       {city?.buildings.map((building) => (
         <button
@@ -26,7 +26,10 @@ const CityPanel: FC<CityPanelProps> = observer(({ id }) => {
         </button>
       ))}
       {city?.resources.map((resource) => (
-        <div className="resource-container" key={resource.resourceName}>
+        <div
+          className={styles['resource-container']}
+          key={resource.resourceName}
+        >
           <span>{resource.resourceName}</span>
           <span>{resource.productionPerSecond}/sec</span>
           <span>{resource.quantity.toFixed(2)}</span>

@@ -2,8 +2,8 @@ import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
 import type { s } from '../../semanticTypes';
 import { useRootStore } from '../../store/rootStoreContext';
-import './app.css';
 import CityPanel from '../cityPanel/cityPanel';
+import styles from './app.module.css';
 
 const App: FC = observer(() => {
   const rootStore = useRootStore();
@@ -19,7 +19,7 @@ const App: FC = observer(() => {
 
   return (
     <div>
-      <div className="container">
+      <div className={styles.container}>
         {rootStore.cityStore.cities.map((city) => {
           return <CityPanel id={city.id} key={city.id} />;
         })}
