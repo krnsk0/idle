@@ -1,6 +1,6 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import type { RootStore } from '../rootStore';
-import type { s } from '../../types';
+import type { s } from '../../semanticTypes';
 import { City, tCitySave } from './city';
 import { computedFn } from 'mobx-utils';
 

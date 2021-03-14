@@ -3,7 +3,7 @@ import { Building, tBuildingSave } from './building';
 import { BuildingNames, ResourceNames } from '../../gameData';
 import { Resource, tResourceSave } from './resource';
 import type { RootStore } from '../rootStore';
-import type { s } from '../../types';
+import type { s } from '../../semanticTypes';
 import { nanoid } from 'nanoid';
 
 export type tCitySave = {

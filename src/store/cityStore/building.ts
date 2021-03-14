@@ -5,7 +5,7 @@ import {
   tBuildingOutput,
 } from '../../gameData';
 import type { RootStore } from '../rootStore';
-import type { s } from '../../types';
+import type { s } from '../../semanticTypes';
 import type { City } from './city';
 import { deepCopy } from 'deep-copy-ts';
 

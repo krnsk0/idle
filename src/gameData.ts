@@ -1,4 +1,4 @@
-import type { s } from './types';
+import type { s } from './semanticTypes';
 
 export enum ResourceNames {
   grain = 'grain',

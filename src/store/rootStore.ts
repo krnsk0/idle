@@ -1,6 +1,6 @@
 import { action, computed, configure, makeObservable, observable } from 'mobx';
 import { CityStore, tCityStoreSave } from './cityStore/cityStore';
-import type { s } from '../types';
+import type { s } from '../semanticTypes';
 
 configure({
   enforceActions: 'always',

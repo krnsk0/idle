@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect } from 'react';
-import type { s } from '../../types';
+import type { s } from '../../semanticTypes';
 import { useRootStore } from '../../store/rootStoreContext';
 import './app.css';
 import CityPanel from '../cityPanel/cityPanel';

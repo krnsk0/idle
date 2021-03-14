@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useRootStore } from '../../store/rootStoreContext';
-import type { s } from '../../types';
+import type { s } from '../../semanticTypes';
 import './cityPanel.css';
 
 type CityPanelProps = {

@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import type { ResourceNames } from '../../gameData';
 import type { RootStore } from '../rootStore';
-import type { s } from '../../types';
+import type { s } from '../../semanticTypes';
 import type { City } from './city';
 
 export type tResourceSave = {
