@@ -1,5 +1,4 @@
 import { makeObservable, observable } from 'mobx';
-import {} from 'nanoid';
 import { serializable } from 'serializr';
 import type { ResourceNames } from '../../gameData';
 import type { s } from '../../types';

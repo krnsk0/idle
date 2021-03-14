@@ -1,6 +1,5 @@
 import { action, computed, makeObservable, observable } from 'mobx';
-import { nanoid } from 'nanoid';
-import { identifier, serializable } from 'serializr';
+import { serializable } from 'serializr';
 import type { ResourceNames } from '../../gameData';
 import type { s } from '../../types';
 import type { RootStore } from '../rootStore';
