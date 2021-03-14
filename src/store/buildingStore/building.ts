@@ -23,6 +23,7 @@ export class Building {
 
     makeObservable(this, {
       quantity: observable,
+      products: observable,
       productionPerSecond: computed,
       buy: action,
     });

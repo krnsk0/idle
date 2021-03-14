@@ -1,6 +1,16 @@
+import { configure } from 'mobx';
+
 import { BuildingStore } from './buildingStore/buildingStore';
 import { ResourceStore } from './resourceStore/resourceStore';
 import type { s } from '../types';
+
+configure({
+  enforceActions: 'always',
+  computedRequiresReaction: false,
+  reactionRequiresObservable: true,
+  observableRequiresReaction: true,
+  disableErrorBoundaries: true,
+});
 
 export class RootStore {
   lastTimestamp: s.Milliseconds = 0;
