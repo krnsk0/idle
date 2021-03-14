@@ -61,10 +61,6 @@ export class Resource {
   }
 
   load(saveData: tResourceSave): void {
-    console.log(
-      `setting ${saveData.resourceName} to ${saveData.quantity} in ${this.resourceName}`
-    );
-
     this.quantity = saveData.quantity;
     this.resourceName = saveData.resourceName;
   }

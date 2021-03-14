@@ -1,14 +1,7 @@
-import { action, computed, configure, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import { CityStore, tCityStoreSave } from './cityStore/cityStore';
 import type { s } from '../semanticTypes';
-
-configure({
-  enforceActions: 'always',
-  computedRequiresReaction: true,
-  reactionRequiresObservable: true,
-  observableRequiresReaction: true,
-  disableErrorBoundaries: true,
-});
+import './config';
 
 export type tRootSave = {
   cityStore: tCityStoreSave;
