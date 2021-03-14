@@ -57,13 +57,22 @@ export class RootStore {
     // run save if needed
     const timeSinceSave = now - this.lastSaved;
     if (timeSinceSave > this.saveInterval) {
-      this.save();
-      this.lastSaved = now;
+      const saveSucceeded = this.save();
+      if (saveSucceeded) this.lastSaved = now;
     }
   }
 
-  save(): void {
+  /**
+   * Serialize and save; tell caller if succeeded
+   */
+  save(): boolean {
     const json = serialize(this);
-    console.log(json);
+    try {
+      window.localStorage.setItem('save', JSON.stringify(json));
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
   }
 }
