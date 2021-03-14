@@ -9,6 +9,12 @@ import type { s } from '../../types';
 import type { City } from './city';
 import { deepCopy } from 'deep-copy-ts';
 
+export type tBuildingSave = {
+  buildingName: BuildingNames;
+  quantity: s.Units;
+  outputs: tBuildingOutput;
+};
+
 export class Building {
   root: RootStore;
   city: City;
@@ -35,6 +41,7 @@ export class Building {
       quantity: observable,
       buy: action,
       tick: action,
+      outputs: observable,
     });
   }
 
@@ -44,4 +51,18 @@ export class Building {
   }
 
   tick(delta: s.Milliseconds): void {}
+
+  get serialize(): tBuildingSave {
+    return {
+      buildingName: this.buildingName,
+      quantity: this.quantity,
+      outputs: deepCopy(this.outputs),
+    };
+  }
+
+  load(saveData: tBuildingSave): void {
+    this.buildingName = saveData.buildingName;
+    this.quantity = saveData.quantity;
+    this.outputs = saveData.outputs;
+  }
 }

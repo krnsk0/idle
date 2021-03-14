@@ -1,5 +1,5 @@
-import { action, configure, makeObservable, observable } from 'mobx';
-import { CityStore } from './cityStore/cityStore';
+import { action, computed, configure, makeObservable, observable } from 'mobx';
+import { CityStore, tCityStoreSave } from './cityStore/cityStore';
 import type { s } from '../types';
 
 configure({
@@ -9,6 +9,12 @@ configure({
   observableRequiresReaction: true,
   disableErrorBoundaries: true,
 });
+
+export type tRootSave = {
+  cityStore: tCityStoreSave;
+  lastTimestamp: s.Milliseconds;
+  saveInterval: s.Milliseconds;
+};
 
 /**
  * Root of state tree; top level contains timing/gameloop
@@ -32,6 +38,7 @@ export class RootStore {
     makeObservable(this, {
       lastTimestamp: observable,
       tick: action,
+      serialize: computed,
     });
   }
 
@@ -49,17 +56,43 @@ export class RootStore {
     }
   }
 
+  get serialize(): tRootSave {
+    return {
+      cityStore: this.cityStore.serialize,
+      lastTimestamp: this.lastTimestamp,
+      saveInterval: this.saveInterval,
+    };
+  }
+
   /**
    * Serialize and save; tell caller if succeeded
    */
   save(): boolean {
-    const json = 'test';
     try {
-      window.localStorage.setItem('save', JSON.stringify(json));
+      window.localStorage.setItem('save', JSON.stringify(this.serialize));
       return true;
     } catch (e) {
       console.log(e);
       return false;
     }
+  }
+
+  load(): boolean {
+    try {
+      const saveString = window.localStorage.getItem('save');
+      if (saveString) {
+        const saveData = <tRootSave>JSON.parse(saveString);
+
+        // parse save and populate
+        this.lastTimestamp = saveData.lastTimestamp;
+        this.saveInterval = saveData.saveInterval;
+        this.cityStore.load(saveData.cityStore);
+
+        return true;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    return false;
   }
 }

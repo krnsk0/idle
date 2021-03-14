@@ -4,6 +4,10 @@ import type { RootStore } from '../rootStore';
 import type { s } from '../../types';
 import type { City } from './city';
 
+export type tResourceSave = {
+  quantity: s.Units;
+  resourceName: ResourceNames;
+};
 export class Resource {
   root: RootStore;
   city: City;
@@ -26,6 +30,7 @@ export class Resource {
       quantity: observable,
       tick: action,
       productionPerSecond: computed,
+      serialize: computed,
     });
   }
 
@@ -44,5 +49,17 @@ export class Resource {
 
       return acc + allBuildings;
     }, 0);
+  }
+
+  get serialize(): tResourceSave {
+    return {
+      quantity: this.quantity,
+      resourceName: this.resourceName,
+    };
+  }
+
+  load(saveData: tResourceSave): void {
+    this.quantity = saveData.quantity;
+    this.resourceName = saveData.resourceName;
   }
 }
