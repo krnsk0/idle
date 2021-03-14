@@ -9,11 +9,11 @@ export type tCityStoreSave = {
 };
 
 export class CityStore {
-  root: RootStore;
+  rootRef: RootStore;
   cities: City[] = [];
 
-  constructor(root: RootStore) {
-    this.root = root;
+  constructor(rootRef: RootStore) {
+    this.rootRef = rootRef;
 
     makeObservable(this, {
       cities: observable,
@@ -29,7 +29,7 @@ export class CityStore {
   }
 
   addCity(): void {
-    this.cities.push(new City(this.root));
+    this.cities.push(new City(this.rootRef));
   }
 
   getCityById = computedFn((id: s.UUID): City | undefined => {
@@ -48,7 +48,7 @@ export class CityStore {
 
     // load cities from save
     saveData.cities.forEach((citySaveData) => {
-      const newCity = new City(this.root);
+      const newCity = new City(this.rootRef);
       this.cities.push(newCity);
       newCity.load(citySaveData);
     });

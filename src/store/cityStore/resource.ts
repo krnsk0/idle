@@ -9,20 +9,20 @@ export type tResourceSave = {
   resourceName: ResourceNames;
 };
 export class Resource {
-  root: RootStore;
-  city: City;
+  rootRef: RootStore;
+  cityRef: City;
   quantity: s.Units;
   resourceName: ResourceNames;
 
   constructor(
-    root: RootStore,
-    city: City,
+    rootRef: RootStore,
+    cityRef: City,
     resourceName: ResourceNames,
     quantity: s.Units
   ) {
     // member initialization
-    this.root = root;
-    this.city = city;
+    this.rootRef = rootRef;
+    this.cityRef = cityRef;
     this.resourceName = resourceName;
     this.quantity = quantity;
 
@@ -44,7 +44,7 @@ export class Resource {
    * How much of this resource is produced per second?
    */
   get productionPerSecond(): s.UnitsPerSecond {
-    return this.city.buildings.reduce((acc, building) => {
+    return this.cityRef.buildings.reduce((acc, building) => {
       const perBuilding = building.outputs[this.resourceName];
 
       const allBuildings = (perBuilding ? perBuilding : 0) * building.quantity;

@@ -13,21 +13,21 @@ export type tCitySave = {
 };
 
 export class City {
-  root: RootStore;
+  rootRef: RootStore;
   id: s.UUID;
   buildings: Building[] = [];
   resources: Resource[] = [];
 
-  constructor(root: RootStore) {
-    this.root = root;
+  constructor(rootRef: RootStore) {
+    this.rootRef = rootRef;
     this.id = nanoid();
 
     // initialize children
     Object.values(BuildingNames).forEach((buildingName) => {
-      this.buildings.push(new Building(root, this, buildingName, 0));
+      this.buildings.push(new Building(rootRef, this, buildingName, 0));
     });
     Object.values(ResourceNames).forEach((resourceName) => {
-      this.resources.push(new Resource(root, this, resourceName, 0));
+      this.resources.push(new Resource(rootRef, this, resourceName, 0));
     });
 
     makeObservable(this, {

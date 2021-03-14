@@ -16,20 +16,20 @@ export type tBuildingSave = {
 };
 
 export class Building {
-  root: RootStore;
+  rootRef: RootStore;
   city: City;
   quantity: s.Units;
   buildingName: BuildingNames;
   outputs: tBuildingOutput;
 
   constructor(
-    root: RootStore,
+    rootRef: RootStore,
     city: City,
     buildingName: BuildingNames,
     quantity: s.Units
   ) {
     // member initialization
-    this.root = root;
+    this.rootRef = rootRef;
     this.city = city;
     this.buildingName = buildingName;
     this.quantity = quantity;
