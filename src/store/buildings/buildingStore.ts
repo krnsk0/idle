@@ -12,14 +12,18 @@ class BuildingProduct {
     readonly root: RootStore,
     readonly resourceName: ResourceNames,
     readonly quantityPerSecond: s.UnitsPerSecond
-  ) {}
+  ) {
+    makeObservable(this, {
+      quantityPerSecond: observable,
+    });
+  }
 }
 
 export class Building {
   quantity: s.Units = 1;
   products: BuildingProduct[] = [];
 
-  constructor(readonly name: BuildingNames, readonly root: RootStore) {
+  constructor(readonly root: RootStore, readonly name: BuildingNames) {
     initialBuildingProducts[
       name
     ].forEach(({ resourceName, quantityPerSecond }) =>
@@ -61,7 +65,7 @@ export class BuildingStore {
   constructor(readonly root: RootStore) {
     // initialize buildings
     Object.values(BuildingNames).forEach((buildingName) => {
-      this.buildings.push(new Building(buildingName, this.root));
+      this.buildings.push(new Building(this.root, buildingName));
     });
 
     makeObservable(this, {

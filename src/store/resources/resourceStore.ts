@@ -6,7 +6,7 @@ import type { RootStore } from '../rootStore';
 export class Resource {
   quantity: s.Units = 0;
 
-  constructor(readonly name: ResourceNames, readonly root: RootStore) {
+  constructor(readonly root: RootStore, readonly name: ResourceNames) {
     makeObservable(this, {
       quantity: observable,
       tick: action,
@@ -33,7 +33,7 @@ export class ResourceStore {
   constructor(readonly root: RootStore) {
     // initialize all resources
     Object.values(ResourceNames).forEach((resourceName) => {
-      this.resources.push(new Resource(resourceName, this.root));
+      this.resources.push(new Resource(this.root, resourceName));
     });
 
     makeObservable(this, {
