@@ -1,13 +1,5 @@
 import { action, configure, makeObservable, observable } from 'mobx';
-import {
-  serialize,
-  createModelSchema,
-  serializable,
-  reference,
-  object,
-} from 'serializr';
-import { BuildingStore } from './buildingStore/buildingStore';
-import { ResourceStore } from './resourceStore/resourceStore';
+import { CityStore } from './cityStore/cityStore';
 import type { s } from '../types';
 
 configure({
@@ -23,19 +15,15 @@ configure({
  */
 export class RootStore {
   lastTimestamp: s.Milliseconds;
-  @serializable
   lastSaved: s.Milliseconds;
-  @serializable
   saveInterval: s.Milliseconds = 1000;
 
   // stores
-  @serializable(object(BuildingStore)) buildingStore: BuildingStore;
-  @serializable(object(ResourceStore)) resourceStore: ResourceStore;
+  cityStore: CityStore;
 
   constructor() {
-    // initialize the substores
-    this.buildingStore = new BuildingStore(this);
-    this.resourceStore = new ResourceStore(this);
+    // member initialization
+    this.cityStore = new CityStore(this);
 
     // initialize timestamps
     this.lastTimestamp = performance.now();
@@ -50,8 +38,7 @@ export class RootStore {
   tick(now: s.Milliseconds): void {
     // run child state ticks
     const delta = now - this.lastTimestamp;
-    this.buildingStore.tick(delta);
-    this.resourceStore.tick(delta);
+    this.cityStore.tick(delta);
     this.lastTimestamp = now;
 
     // run save if needed
@@ -66,7 +53,7 @@ export class RootStore {
    * Serialize and save; tell caller if succeeded
    */
   save(): boolean {
-    const json = serialize(this);
+    const json = 'test';
     try {
       window.localStorage.setItem('save', JSON.stringify(json));
       return true;

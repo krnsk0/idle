@@ -1,8 +1,9 @@
 .city-container {
+  border: 1px solid black;
+  margin-right: 0.5em;
 }
 
-button {
+.resource-container {
   display: flex;
   justify-content: space-between;
-  width: 100px;
 }

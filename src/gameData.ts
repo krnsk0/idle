@@ -12,28 +12,22 @@ export enum BuildingNames {
   lab = 'lab',
 }
 
-export const initialBuildingProducts: {
-  [key in BuildingNames]: {
-    resourceName: ResourceNames;
-    quantityPerSecond: s.UnitsPerSecond;
-  }[];
-} = {
-  [BuildingNames.farm]: [
-    {
-      resourceName: ResourceNames.grain,
-      quantityPerSecond: 1,
-    },
-  ],
-  [BuildingNames.mine]: [
-    {
-      resourceName: ResourceNames.minerals,
-      quantityPerSecond: 1,
-    },
-  ],
-  [BuildingNames.lab]: [
-    {
-      resourceName: ResourceNames.knowledge,
-      quantityPerSecond: 1,
-    },
-  ],
+export type tBuildingOutputs = {
+  [key in BuildingNames]: tBuildingOutput;
+};
+
+export type tBuildingOutput = {
+  [key in ResourceNames]?: s.UnitsPerSecond;
+};
+
+export const initialBuildingOutputs: tBuildingOutputs = {
+  [BuildingNames.farm]: {
+    [ResourceNames.grain]: 1,
+  },
+  [BuildingNames.mine]: {
+    [ResourceNames.minerals]: 1,
+  },
+  [BuildingNames.lab]: {
+    [ResourceNames.knowledge]: 1,
+  },
 };
