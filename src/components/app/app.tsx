@@ -7,7 +7,7 @@ import ResourceView from '../resourceView/resourceView';
 
 import './app.css';
 
-const App: FC = observer(() => {
+const App: FC = () => {
   const rootStore = useRootStore();
 
   const gameLoop = (now: s.Milliseconds) => {
@@ -25,6 +25,6 @@ const App: FC = observer(() => {
       <CityInterface />
     </div>
   );
-});
+};
 
 export default App;

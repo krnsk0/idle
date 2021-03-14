@@ -21,7 +21,7 @@ export class Resource {
   get productionPerSecond(): s.UnitsPerSecond {
     return this.root.buildingStore.buildings.reduce(
       (outerSum, building) =>
-        outerSum + building.productionPerSecond(this.name),
+        outerSum + building.getProductionPerSecond(this.name),
       0
     );
   }

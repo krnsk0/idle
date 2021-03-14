@@ -24,23 +24,20 @@ export class Building {
     makeObservable(this, {
       quantity: observable,
       products: observable,
-      productionPerSecond: computed,
       buy: action,
     });
   }
 
   // use closure to return memoized func that
   // can act as computed value
-  get productionPerSecond() {
-    return (resourceName: ResourceNames): s.UnitsPerSecond => {
-      const singleBuilding = this.products.reduce((acc, product) => {
-        const production =
-          product.resourceName === resourceName ? product.quantityPerSecond : 0;
-        return acc + production;
-      }, 0);
+  getProductionPerSecond(resourceName: ResourceNames): s.UnitsPerSecond {
+    const singleBuilding = this.products.reduce((acc, product) => {
+      const production =
+        product.resourceName === resourceName ? product.quantityPerSecond : 0;
+      return acc + production;
+    }, 0);
 
-      return singleBuilding * this.quantity;
-    };
+    return singleBuilding * this.quantity;
   }
 
   buy(quantity: s.Units) {

@@ -1,4 +1,4 @@
-import { configure } from 'mobx';
+import { action, configure, makeObservable, observable } from 'mobx';
 
 import { BuildingStore } from './buildingStore/buildingStore';
 import { ResourceStore } from './resourceStore/resourceStore';
@@ -6,7 +6,7 @@ import type { s } from '../types';
 
 configure({
   enforceActions: 'always',
-  computedRequiresReaction: false,
+  computedRequiresReaction: true,
   reactionRequiresObservable: true,
   observableRequiresReaction: true,
   disableErrorBoundaries: true,
@@ -22,6 +22,11 @@ export class RootStore {
   constructor() {
     this.buildingStore = new BuildingStore(this);
     this.resourceStore = new ResourceStore(this);
+
+    makeObservable(this, {
+      lastTimestamp: observable,
+      tick: action,
+    });
   }
 
   tick(now: s.Milliseconds) {
