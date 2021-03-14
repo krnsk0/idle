@@ -35,6 +35,7 @@ export class City {
       resources: observable,
       tick: action,
       serialize: computed,
+      load: action,
     });
   }
 

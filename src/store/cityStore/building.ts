@@ -42,6 +42,7 @@ export class Building {
       buy: action,
       tick: action,
       outputs: observable,
+      load: action,
     });
   }
 

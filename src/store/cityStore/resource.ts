@@ -31,6 +31,7 @@ export class Resource {
       tick: action,
       productionPerSecond: computed,
       serialize: computed,
+      load: action,
     });
   }
 
@@ -59,6 +60,8 @@ export class Resource {
   }
 
   load(saveData: tResourceSave): void {
+    console.log(`setting ${saveData.resourceName} to ${saveData.quantity}`);
+
     this.quantity = saveData.quantity;
     this.resourceName = saveData.resourceName;
   }
