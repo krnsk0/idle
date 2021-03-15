@@ -1,7 +1,11 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 import {
   BuildingNames,
+  initialBuildingBuildCosts,
   initialBuildingOutputs,
+  ResourceNames,
+  tBuildingBuildCosts,
+  tBuildingCostResourceRow,
   tBuildingOutput,
 } from '../../gameData';
 import type { RootStore } from '../rootStore';
@@ -20,6 +24,7 @@ export class Building {
   city: City;
   quantity: s.Units;
   buildingName: BuildingNames;
+  buildCosts: tBuildingBuildCosts;
   outputs: tBuildingOutput;
 
   constructor(
@@ -36,6 +41,7 @@ export class Building {
 
     // data initialization
     this.outputs = deepCopy(initialBuildingOutputs[buildingName]);
+    this.buildCosts = deepCopy(initialBuildingBuildCosts[buildingName]);
 
     makeObservable(this, {
       quantity: observable,
@@ -43,6 +49,17 @@ export class Building {
       tick: action,
       outputs: observable,
       load: action,
+      buildingCosts: computed,
+    });
+  }
+
+  get buildingCosts(): tBuildingCostResourceRow[] {
+    const multiplier = this.buildCosts.multiplier;
+    return this.buildCosts.resources.map(({ resourceName, cost }) => {
+      return {
+        resourceName,
+        cost: (cost ? cost : 0) * Math.pow(multiplier, this.quantity),
+      };
     });
   }
 

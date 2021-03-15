@@ -23,6 +23,17 @@ const CityPanel: FC<CityPanelProps> = observer(({ id }) => {
         >
           <span>{building.buildingName}</span>
           <span>{building.quantity}</span>
+          <div>
+            costs:
+            {building.buildingCosts.map(({ resourceName, cost }) => {
+              return (
+                <div>
+                  <span>{resourceName}</span>
+                  <span>{cost.toFixed(2)}</span>
+                </div>
+              );
+            })}
+          </div>
         </button>
       ))}
       {city?.resources.map((resource) => (
