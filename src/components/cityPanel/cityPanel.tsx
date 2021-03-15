@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useRootStore } from '../../store/rootStoreContext';
 import type { s } from '../../semanticTypes';
-import styles from './cityPanel.module.css';
+import styles from './cityPanel.module.scss';
 
 type CityPanelProps = {
   id: s.UUID;

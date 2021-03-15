@@ -3,7 +3,7 @@ import React, { FC, useEffect } from 'react';
 import type { s } from '../../semanticTypes';
 import { useRootStore } from '../../store/rootStoreContext';
 import CityPanel from '../cityPanel/cityPanel';
-import styles from './app.module.css';
+import styles from './app.module.scss';
 
 const App: FC = observer(() => {
   const rootStore = useRootStore();
