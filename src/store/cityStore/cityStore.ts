@@ -19,8 +19,6 @@ export class CityStore {
       cities: observable,
       tick: action,
       addCity: action,
-      serialize: computed,
-      load: action,
     });
   }
 
@@ -35,22 +33,4 @@ export class CityStore {
   getCityById = computedFn((id: s.UUID): City | undefined => {
     return this.cities.find((city) => city.id === id);
   });
-
-  get serialize(): tCityStoreSave {
-    return {
-      cities: this.cities.map((city) => city.serialize),
-    };
-  }
-
-  load(saveData: tCityStoreSave): void {
-    // clear existing cities
-    this.cities = [];
-
-    // load cities from save
-    saveData.cities.forEach((citySaveData) => {
-      const newCity = new City(this.rootRef);
-      this.cities.push(newCity);
-      newCity.load(citySaveData);
-    });
-  }
 }

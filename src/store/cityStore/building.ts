@@ -48,8 +48,6 @@ export class Building {
       buy: action,
       tick: action,
       outputs: observable,
-      load: action,
-      buildingCosts: computed,
     });
   }
 
@@ -69,18 +67,4 @@ export class Building {
   }
 
   tick(delta: s.Milliseconds): void {}
-
-  get serialize(): tBuildingSave {
-    return {
-      buildingName: this.buildingName,
-      quantity: this.quantity,
-      outputs: deepCopy(this.outputs),
-    };
-  }
-
-  load(saveData: tBuildingSave): void {
-    this.buildingName = saveData.buildingName;
-    this.quantity = saveData.quantity;
-    this.outputs = saveData.outputs;
-  }
 }

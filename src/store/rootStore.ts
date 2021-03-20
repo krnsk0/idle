@@ -3,6 +3,8 @@ import { CityStore, tCityStoreSave } from './cityStore/cityStore';
 import type { s } from '../semanticTypes';
 import './config';
 
+const saveKey = 'idleSave';
+
 export type tRootSave = {
   cityStore: tCityStoreSave;
   lastTimestamp: s.Milliseconds;
@@ -35,7 +37,7 @@ export class RootStore {
       load: action,
     });
 
-    this.load();
+    // this.load();
   }
 
   tick(now: s.Milliseconds): void {
@@ -66,7 +68,7 @@ export class RootStore {
   save(): boolean {
     console.log('saved');
     try {
-      window.localStorage.setItem('save', JSON.stringify(this.serialize));
+      window.localStorage.setItem(saveKey, 'todo');
       return true;
     } catch (e) {
       console.log(e);
@@ -77,13 +79,11 @@ export class RootStore {
   load(): boolean {
     console.log('loading save');
     try {
-      const saveString = window.localStorage.getItem('save');
+      const saveString = window.localStorage.getItem(saveKey);
       if (saveString) {
         const saveData = <tRootSave>JSON.parse(saveString);
 
         // parse save and populate
-        this.saveInterval = saveData.saveInterval;
-        this.cityStore.load(saveData.cityStore);
 
         // run missing time
         // // this.lastTimestamp = saveData.lastTimestamp;
@@ -100,7 +100,7 @@ export class RootStore {
   clearSave(): boolean {
     try {
       console.log('clearing save');
-      window.localStorage.removeItem('save');
+      window.localStorage.removeItem(saveKey);
       this.load();
     } catch (e) {
       console.log(e);

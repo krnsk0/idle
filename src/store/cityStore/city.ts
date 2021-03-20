@@ -34,44 +34,11 @@ export class City {
       buildings: observable,
       resources: observable,
       tick: action,
-      serialize: computed,
-      load: action,
     });
   }
 
   tick(delta: s.Milliseconds): void {
     Object.values(this.buildings).map((building) => building.tick(delta));
     Object.values(this.resources).map((resource) => resource.tick(delta));
-  }
-
-  get serialize(): tCitySave {
-    return {
-      id: this.id,
-      resources: this.resources.map((resource) => resource.serialize),
-      buildings: this.buildings.map((building) => building.serialize),
-    };
-  }
-
-  load(saveData: tCitySave): void {
-    this.id = saveData.id;
-    // load saved buildings
-    this.buildings.map((building) => {
-      const savedbuilding = saveData.buildings.find(
-        (savedbuilding) => savedbuilding.buildingName === building.buildingName
-      );
-      if (savedbuilding) {
-        building.load(savedbuilding);
-      }
-    });
-
-    // load saved resources
-    this.resources.map((resource) => {
-      const savedResource = saveData.resources.find(
-        (savedResource) => savedResource.resourceName === resource.resourceName
-      );
-      if (savedResource) {
-        resource.load(savedResource);
-      }
-    });
   }
 }

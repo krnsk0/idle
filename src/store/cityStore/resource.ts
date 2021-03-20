@@ -30,8 +30,6 @@ export class Resource {
       quantity: observable,
       tick: action,
       productionPerSecond: computed,
-      serialize: computed,
-      load: action,
     });
   }
 
@@ -51,17 +49,5 @@ export class Resource {
 
       return acc + allBuildings;
     }, 0);
-  }
-
-  get serialize(): tResourceSave {
-    return {
-      quantity: this.quantity,
-      resourceName: this.resourceName,
-    };
-  }
-
-  load(saveData: tResourceSave): void {
-    this.quantity = saveData.quantity;
-    this.resourceName = saveData.resourceName;
   }
 }
