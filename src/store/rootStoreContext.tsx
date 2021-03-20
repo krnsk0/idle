@@ -1,5 +1,6 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 import { deserialize } from 'serializr';
+import { DebugPanel } from '../components/debugPanel/debugPanel';
 import { RootStore, saveKey } from './rootStore';
 
 const StoreContext = createContext<RootStore | undefined>(undefined);
@@ -29,7 +30,12 @@ export const RootStoreProvider = ({ children }: { children: ReactNode }) => {
     root = new RootStore();
   }
 
-  return <StoreContext.Provider value={root}>{children}</StoreContext.Provider>;
+  return (
+    <StoreContext.Provider value={root}>
+      {children}
+      <DebugPanel />
+    </StoreContext.Provider>
+  );
 };
 
 // hook

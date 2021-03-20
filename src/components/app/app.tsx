@@ -18,18 +18,10 @@ const App: FC = observer(() => {
   }, []);
 
   return (
-    <div>
-      <div className={styles.container}>
-        {rootStore.cityStore.cities.map((city) => {
-          return <CityPanel id={city.id} key={city.id} />;
-        })}
-      </div>
-      <button type="button" onClick={() => rootStore.cityStore.addCity()}>
-        add city
-      </button>
-      {/* <button type="button" onClick={() => rootStore.clearSave()}>
-        clear save
-      </button> */}
+    <div className={styles.container}>
+      {rootStore.cityStore.cities.map((city) => {
+        return <CityPanel id={city.id} key={city.id} />;
+      })}
     </div>
   );
 });
