@@ -1,18 +1,11 @@
-import React, {
-  FC,
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { StoreContext } from '../../store/rootStoreContext';
 import { RootStore, saveKey } from '../../store/rootStore';
 import { DebugPanel } from '../debugPanel/debugPanel';
 import Game from '../game/game';
 import { deserialize } from 'serializr';
 
-const App: FC = () => {
+const GameWithStore: FC = () => {
   const [root, setRoot] = useState<RootStore | undefined>(undefined);
 
   const loadGame = () => {
@@ -49,8 +42,8 @@ const App: FC = () => {
       <DebugPanel />
     </StoreContext.Provider>
   ) : (
-    <div>loading</div>
+    <div>loading...</div>
   );
 };
 
-export default App;
+export default GameWithStore;

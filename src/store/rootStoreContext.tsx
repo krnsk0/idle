@@ -7,7 +7,7 @@ export const StoreContext = createContext<RootStore | undefined>(undefined);
 export const useRootStore = () => {
   const context = useContext(StoreContext);
   if (context === undefined) {
-    throw new Error('useRootStore must be used within RootStoreProvider');
+    throw new Error('useRootStore must be used within GameWithStore');
   }
 
   return context;
