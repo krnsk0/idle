@@ -1,29 +1,56 @@
-import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect } from 'react';
-import type { s } from '../../semanticTypes';
-import { useRootStore } from '../../store/rootStoreContext';
-import CityPanel from '../cityPanel/cityPanel';
-import styles from './app.module.scss';
+import React, {
+  FC,
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { StoreContext } from '../../store/rootStoreContext';
+import { RootStore, saveKey } from '../../store/rootStore';
+import { DebugPanel } from '../debugPanel/debugPanel';
+import Game from '../game/game';
+import { deserialize } from 'serializr';
 
-const App: FC = observer(() => {
-  const rootStore = useRootStore();
+const App: FC = () => {
+  const [root, setRoot] = useState<RootStore | undefined>(undefined);
 
-  const gameLoop = (now: s.Milliseconds) => {
-    rootStore.tick(now);
-    window.requestAnimationFrame(gameLoop);
+  const loadGame = () => {
+    // attempt to load saved game
+    try {
+      const saveString = window.localStorage.getItem(saveKey);
+      if (saveString) {
+        const saveData = JSON.parse(saveString);
+
+        const orignalConsoleWarn = console.warn;
+        console.warn = () => {};
+        setRoot(
+          deserialize<RootStore>(RootStore, saveData, (err) => {
+            if (err) console.error('Deserialization err: ', err);
+          })
+        );
+        console.warn = orignalConsoleWarn;
+      } else {
+        setRoot(new RootStore());
+      }
+    } catch (err) {
+      console.error('loading error', err);
+      setRoot(new RootStore());
+    }
   };
 
   useEffect(() => {
-    gameLoop(0);
+    loadGame();
   }, []);
 
-  return (
-    <div className={styles.container}>
-      {rootStore.cityStore.cities.map((city) => {
-        return <CityPanel id={city.id} key={city.id} />;
-      })}
-    </div>
+  return root ? (
+    <StoreContext.Provider value={root}>
+      <Game />
+      <DebugPanel />
+    </StoreContext.Provider>
+  ) : (
+    <div>loading</div>
   );
-});
+};
 
 export default App;
