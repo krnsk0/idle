@@ -6,6 +6,7 @@ import CityPanel from '../cityPanel/cityPanel';
 import styles from './game.module.scss';
 
 const Game: FC = observer(() => {
+  console.log('re-rendering');
   const rootStore = useRootStore();
 
   const gameLoop = (now: s.Milliseconds) => {

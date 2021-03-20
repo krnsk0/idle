@@ -13,15 +13,18 @@ const GameWithStore: FC = () => {
     try {
       const saveString = window.localStorage.getItem(saveKey);
       if (saveString) {
-        const saveData = JSON.parse(saveString);
-
+        // monkeypatch to supress unhelpful warnings
         const orignalConsoleWarn = console.warn;
         console.warn = () => {};
+
+        // deserialize
         setRoot(
-          deserialize<RootStore>(RootStore, saveData, (err) => {
+          deserialize<RootStore>(RootStore, JSON.parse(saveString), (err) => {
             if (err) console.error('Deserialization err: ', err);
           })
         );
+
+        // undo monekypatch
         console.warn = orignalConsoleWarn;
       } else {
         setRoot(new RootStore());
@@ -32,6 +35,11 @@ const GameWithStore: FC = () => {
     }
   };
 
+  const clearSave = () => {
+    window.localStorage.removeItem(saveKey);
+    loadGame();
+  };
+
   useEffect(() => {
     loadGame();
   }, []);
@@ -39,7 +47,7 @@ const GameWithStore: FC = () => {
   return root ? (
     <StoreContext.Provider value={root}>
       <Game />
-      <DebugPanel />
+      <DebugPanel clearSave={clearSave} />
     </StoreContext.Provider>
   ) : (
     <div>loading...</div>
