@@ -1,8 +1,9 @@
 import { action, computed, makeObservable, observable } from 'mobx';
+import { computedFn } from 'mobx-utils';
+import { createModelSchema, list, object, primitive } from 'serializr';
 import type { RootStore } from '../rootStore';
 import type { s } from '../../semanticTypes';
 import { City } from './city';
-import { computedFn } from 'mobx-utils';
 
 export class CityStore {
   rootRef: RootStore;
@@ -30,3 +31,15 @@ export class CityStore {
     return this.cities.find((city) => city.id === id);
   });
 }
+
+createModelSchema<CityStore>(
+  CityStore,
+  {
+    id: primitive(),
+    buildingName: primitive(),
+    cities: list(object(City)),
+  },
+  (context) => {
+    return new CityStore(context.rootContext.target);
+  }
+);

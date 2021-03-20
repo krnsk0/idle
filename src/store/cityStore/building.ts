@@ -12,6 +12,7 @@ import type { RootStore } from '../rootStore';
 import type { s } from '../../semanticTypes';
 import type { City } from './city';
 import { deepCopy } from 'deep-copy-ts';
+import { createModelSchema, object, primitive, raw } from 'serializr';
 
 export class Building {
   rootRef: RootStore;
@@ -62,3 +63,21 @@ export class Building {
 
   tick(delta: s.Milliseconds): void {}
 }
+
+createModelSchema<Building>(
+  Building,
+  {
+    quantity: primitive(),
+    buildingName: primitive(),
+    buildCosts: raw(),
+    outputs: raw(),
+  },
+  (context) => {
+    return new Building(
+      context.rootContext.target,
+      (<{ target: City }>context.parentContext).target,
+      <BuildingNames>'',
+      0
+    );
+  }
+);

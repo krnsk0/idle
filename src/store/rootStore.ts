@@ -1,9 +1,9 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
+import { createModelSchema, object, primitive, serialize } from 'serializr';
 import { CityStore } from './cityStore/cityStore';
 import type { s } from '../semanticTypes';
 import './config';
-
-const saveKey = 'idleSave';
+export const saveKey = 'idleSave';
 
 /**
  * Root of state tree; top level contains timing/gameloop
@@ -27,11 +27,7 @@ export class RootStore {
     makeObservable(this, {
       lastTimestamp: observable,
       tick: action,
-      serialize: computed,
-      load: action,
     });
-
-    // this.load();
   }
 
   tick(now: s.Milliseconds): void {
@@ -48,57 +44,24 @@ export class RootStore {
     }
   }
 
-  get serialize(): tRootSave {
-    return {
-      cityStore: this.cityStore.serialize,
-      lastTimestamp: this.lastTimestamp,
-      saveInterval: this.saveInterval,
-    };
-  }
-
   /**
    * Serialize and save; tell caller if succeeded
    */
   save(): boolean {
     console.log('saved');
     try {
-      window.localStorage.setItem(saveKey, 'todo');
+      const json = JSON.stringify(serialize(RootStore, this));
+      window.localStorage.setItem(saveKey, json);
       return true;
     } catch (e) {
       console.log(e);
       return false;
     }
   }
-
-  load(): boolean {
-    console.log('loading save');
-    try {
-      const saveString = window.localStorage.getItem(saveKey);
-      if (saveString) {
-        const saveData = <tRootSave>JSON.parse(saveString);
-
-        // parse save and populate
-
-        // run missing time
-        // // this.lastTimestamp = saveData.lastTimestamp;
-        // this.tick(performance.now());
-
-        return true;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    return false;
-  }
-
-  clearSave(): boolean {
-    try {
-      console.log('clearing save');
-      window.localStorage.removeItem(saveKey);
-      this.load();
-    } catch (e) {
-      console.log(e);
-    }
-    return false;
-  }
 }
+
+createModelSchema<RootStore>(RootStore, {
+  lastTimestamp: primitive(),
+  saveInterval: primitive(),
+  cityStore: object(CityStore),
+});

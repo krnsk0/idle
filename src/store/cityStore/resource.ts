@@ -3,7 +3,7 @@ import type { ResourceNames } from '../../gameData';
 import type { RootStore } from '../rootStore';
 import type { s } from '../../semanticTypes';
 import type { City } from './city';
-import { createModelSchema } from 'serializr';
+import { createModelSchema, primitive } from 'serializr';
 
 export class Resource {
   rootRef: RootStore;
@@ -48,3 +48,16 @@ export class Resource {
     }, 0);
   }
 }
+
+createModelSchema<Resource>(
+  Resource,
+  { quantity: primitive(), resourceName: primitive() },
+  (context) => {
+    return new Resource(
+      context.rootContext.target,
+      (<{ target: City }>context.parentContext).target,
+      <ResourceNames>'',
+      0
+    );
+  }
+);

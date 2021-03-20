@@ -5,6 +5,7 @@ import { Resource } from './resource';
 import type { RootStore } from '../rootStore';
 import type { s } from '../../semanticTypes';
 import { nanoid } from 'nanoid';
+import { createModelSchema, list, object, primitive } from 'serializr';
 
 export class City {
   rootRef: RootStore;
@@ -36,3 +37,16 @@ export class City {
     Object.values(this.resources).map((resource) => resource.tick(delta));
   }
 }
+
+createModelSchema<City>(
+  City,
+  {
+    id: primitive(),
+    buildingName: primitive(),
+    buildings: list(object(Building)),
+    resources: list(object(Resource)),
+  },
+  (context) => {
+    return new City(context.rootContext.target);
+  }
+);
