@@ -1,22 +1,29 @@
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import type { s } from '../../semanticTypes';
 import { useRootStore } from '../../store/rootStoreContext';
 import CityPanel from '../cityPanel/cityPanel';
 import styles from './game.module.scss';
 
 const Game: FC = observer(() => {
-  console.log('re-rendering');
+  const [animationFrameRequestId, setAnimationFrameRequestId] = useState(0);
   const rootStore = useRootStore();
 
   const gameLoop = (now: s.Milliseconds) => {
     rootStore.tick(now);
-    window.requestAnimationFrame(gameLoop);
+    setAnimationFrameRequestId(window.requestAnimationFrame(gameLoop));
   };
 
+  /**
+   * Starts the game loop
+   * RootStore is provided to the dependencies array
+   * to make sure gameLoop restarts when save is cleared
+   * or overwritten
+   */
   useEffect(() => {
+    window.cancelAnimationFrame(animationFrameRequestId);
     gameLoop(0);
-  }, []);
+  }, [rootStore]);
 
   return (
     <div className={styles.container}>
