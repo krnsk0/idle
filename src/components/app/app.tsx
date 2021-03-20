@@ -27,9 +27,9 @@ const App: FC = observer(() => {
       <button type="button" onClick={() => rootStore.cityStore.addCity()}>
         add city
       </button>
-      <button type="button" onClick={() => rootStore.clearSave()}>
+      {/* <button type="button" onClick={() => rootStore.clearSave()}>
         clear save
-      </button>
+      </button> */}
     </div>
   );
 });

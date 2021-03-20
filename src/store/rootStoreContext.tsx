@@ -13,12 +13,19 @@ export const RootStoreProvider = ({ children }: { children: ReactNode }) => {
     const saveString = window.localStorage.getItem(saveKey);
     if (saveString) {
       const saveData = JSON.parse(saveString);
-      root = deserialize<RootStore>(RootStore, saveData);
+
+      // TODO: find a better way to do this
+      const orignalConsoleWarn = console.warn;
+      console.warn = () => {};
+      root = deserialize<RootStore>(RootStore, saveData, (err) => {
+        if (err) console.error('Deserialization err: ', err);
+      });
+      console.warn = orignalConsoleWarn;
     } else {
       root = new RootStore();
     }
-  } catch (e) {
-    console.log('loading error', e);
+  } catch (err) {
+    console.error('loading error', err);
     root = new RootStore();
   }
 
