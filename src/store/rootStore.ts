@@ -1,15 +1,9 @@
 import { action, computed, makeObservable, observable } from 'mobx';
-import { CityStore, tCityStoreSave } from './cityStore/cityStore';
+import { CityStore } from './cityStore/cityStore';
 import type { s } from '../semanticTypes';
 import './config';
 
 const saveKey = 'idleSave';
-
-export type tRootSave = {
-  cityStore: tCityStoreSave;
-  lastTimestamp: s.Milliseconds;
-  saveInterval: s.Milliseconds;
-};
 
 /**
  * Root of state tree; top level contains timing/gameloop

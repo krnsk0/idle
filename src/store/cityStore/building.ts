@@ -13,12 +13,6 @@ import type { s } from '../../semanticTypes';
 import type { City } from './city';
 import { deepCopy } from 'deep-copy-ts';
 
-export type tBuildingSave = {
-  buildingName: BuildingNames;
-  quantity: s.Units;
-  outputs: tBuildingOutput;
-};
-
 export class Building {
   rootRef: RootStore;
   city: City;

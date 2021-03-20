@@ -1,16 +1,10 @@
 import { action, computed, makeObservable, observable } from 'mobx';
-import { Building, tBuildingSave } from './building';
+import { Building } from './building';
 import { BuildingNames, ResourceNames } from '../../gameData';
-import { Resource, tResourceSave } from './resource';
+import { Resource } from './resource';
 import type { RootStore } from '../rootStore';
 import type { s } from '../../semanticTypes';
 import { nanoid } from 'nanoid';
-
-export type tCitySave = {
-  id: s.UUID;
-  resources: tResourceSave[];
-  buildings: tBuildingSave[];
-};
 
 export class City {
   rootRef: RootStore;

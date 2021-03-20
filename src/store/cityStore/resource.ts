@@ -3,11 +3,8 @@ import type { ResourceNames } from '../../gameData';
 import type { RootStore } from '../rootStore';
 import type { s } from '../../semanticTypes';
 import type { City } from './city';
+import { createModelSchema } from 'serializr';
 
-export type tResourceSave = {
-  quantity: s.Units;
-  resourceName: ResourceNames;
-};
 export class Resource {
   rootRef: RootStore;
   cityRef: City;
