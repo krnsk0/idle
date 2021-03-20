@@ -52,8 +52,8 @@ export class RootStore {
     try {
       const json = JSON.stringify(serialize(RootStore, this));
       window.localStorage.setItem(saveKey, json);
-    } catch (e) {
-      console.log(e);
+    } catch (err) {
+      console.log('save error', err);
     }
   }
 }

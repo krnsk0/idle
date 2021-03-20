@@ -40,6 +40,16 @@ const GameWithStore: FC = () => {
     loadGame();
   };
 
+  const loadFromClipboard = async () => {
+    try {
+      const saveString = await window.navigator.clipboard.readText();
+      window.localStorage.setItem(saveKey, saveString);
+      loadGame();
+    } catch (err) {
+      console.log('error loading from clipboard', err);
+    }
+  };
+
   useEffect(() => {
     loadGame();
   }, []);
@@ -47,7 +57,7 @@ const GameWithStore: FC = () => {
   return root ? (
     <StoreContext.Provider value={root}>
       <Game />
-      <DebugPanel clearSave={clearSave} />
+      <DebugPanel clearSave={clearSave} loadFromClipboard={loadFromClipboard} />
     </StoreContext.Provider>
   ) : (
     <div>loading...</div>
