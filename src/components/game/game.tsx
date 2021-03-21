@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react-lite';
-import React, { FC, useEffect, useState } from 'react';
-import type { s } from '../../semanticTypes';
+import React, { FC, useEffect } from 'react';
 import { useRootStore } from '../../store/useRootStore';
 import CityPanel from '../cityPanel/cityPanel';
-import styles from './game.module.scss';
+import styles from './styles.module.scss';
 
 const Game: FC = observer(() => {
   const { gameState, loadGame, tick } = useRootStore();

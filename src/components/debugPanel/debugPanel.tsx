@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useRootStore } from '../../store/useRootStore';
-import styles from './debugPanel.module.scss';
-import { saveKey } from '../../store/store';
+import styles from './styles.module.scss';
 
 type DebugPanelProps = {};
 
