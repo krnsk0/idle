@@ -16,10 +16,11 @@ export const saveKey = 'idleSave';
 export class Store {
   // root of serialized game state
   gameState: GameState;
+
+  // last timestamp at which gamestate was serialized & saved
   lastSaved: s.Milliseconds;
 
   constructor() {
-    // member initialization
     this.gameState = new GameState();
     this.lastSaved = Date.now();
 
@@ -33,6 +34,11 @@ export class Store {
     });
   }
 
+  /**
+   * Tick at this level handles saving, also delegating
+   * ticks to the next leafward node(s) in the tree. Almost
+   * all tick functions expected to delegate in this way
+   */
   tick = (now: s.Milliseconds): void => {
     this.gameState.tick(now);
 
