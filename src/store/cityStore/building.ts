@@ -8,14 +8,14 @@ import {
   tBuildingCostResourceRow,
   tBuildingOutput,
 } from '../../gameData';
-import type { RootStore } from '../rootStore';
 import type { s } from '../../semanticTypes';
 import type { City } from './city';
 import { deepCopy } from 'deep-copy-ts';
 import { createModelSchema, object, primitive, raw } from 'serializr';
+import type { GameState } from '../gameState';
 
 export class Building {
-  rootRef: RootStore;
+  rootRef: GameState;
   city: City;
   quantity: s.Units;
   buildingName: BuildingNames;
@@ -23,7 +23,7 @@ export class Building {
   outputs: tBuildingOutput;
 
   constructor(
-    rootRef: RootStore,
+    rootRef: GameState,
     city: City,
     buildingName: BuildingNames,
     quantity: s.Units

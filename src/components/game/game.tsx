@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import React, { FC, useEffect, useState } from 'react';
 import type { s } from '../../semanticTypes';
-import { useRootStore } from '../../store/rootStoreContext';
+import { useRootStore } from '../../store/useRootStore';
 import CityPanel from '../cityPanel/cityPanel';
 import styles from './game.module.scss';
 
@@ -27,7 +27,7 @@ const Game: FC = observer(() => {
 
   return (
     <div className={styles.container}>
-      {rootStore.cityStore.cities.map((city) => {
+      {rootStore.gameState.cityStore.cities.map((city) => {
         return <CityPanel id={city.id} key={city.id} />;
       })}
     </div>

@@ -1,18 +1,18 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import type { ResourceNames } from '../../gameData';
-import type { RootStore } from '../rootStore';
 import type { s } from '../../semanticTypes';
 import type { City } from './city';
 import { createModelSchema, primitive } from 'serializr';
+import type { GameState } from '../gameState';
 
 export class Resource {
-  rootRef: RootStore;
+  rootRef: GameState;
   cityRef: City;
   quantity: s.Units;
   resourceName: ResourceNames;
 
   constructor(
-    rootRef: RootStore,
+    rootRef: GameState,
     cityRef: City,
     resourceName: ResourceNames,
     quantity: s.Units

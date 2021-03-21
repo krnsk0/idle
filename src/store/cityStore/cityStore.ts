@@ -1,15 +1,15 @@
 import { action, computed, makeObservable, observable } from 'mobx';
 import { computedFn } from 'mobx-utils';
 import { createModelSchema, list, object, primitive } from 'serializr';
-import type { RootStore } from '../rootStore';
 import type { s } from '../../semanticTypes';
+import type { GameState } from '../gameState';
 import { City } from './city';
 
 export class CityStore {
-  rootRef: RootStore;
+  rootRef: GameState;
   cities: City[] = [];
 
-  constructor(rootRef: RootStore) {
+  constructor(rootRef: GameState) {
     this.rootRef = rootRef;
 
     makeObservable(this, {

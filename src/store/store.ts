@@ -1,24 +1,24 @@
 import { action, makeObservable, observable } from 'mobx';
-import { createModelSchema, object, primitive, serialize } from 'serializr';
-import { CityStore } from './cityStore/cityStore';
+import { serialize, deserialize } from 'serializr';
 import type { s } from '../semanticTypes';
 import './config';
+import { GameState } from './gameState';
 export const saveKey = 'idleSave';
 
 /**
  * Root of state tree; top level contains timing/gameloop
  */
-export class RootStore {
+export class Store {
   lastTimestamp: s.Milliseconds;
   lastSaved: s.Milliseconds;
   saveInterval: s.Milliseconds = 1000;
 
-  // stores
-  cityStore: CityStore;
+  // root of serialized game state
+  gameState: GameState;
 
   constructor() {
     // member initialization
-    this.cityStore = new CityStore(this);
+    this.gameState = new GameState();
 
     // initialize timestamps
     this.lastTimestamp = performance.now();
@@ -33,7 +33,7 @@ export class RootStore {
   tick(now: s.Milliseconds): void {
     // run child state ticks
     const delta = now - this.lastTimestamp;
-    this.cityStore.tick(delta);
+    this.gameState.tick(delta);
     this.lastTimestamp = now;
 
     // run save if needed
@@ -50,16 +50,10 @@ export class RootStore {
   save() {
     console.log('saved');
     try {
-      const json = JSON.stringify(serialize(RootStore, this));
+      const json = JSON.stringify(serialize(GameState, this.gameState));
       window.localStorage.setItem(saveKey, json);
     } catch (err) {
       console.log('save error', err);
     }
   }
 }
-
-createModelSchema<RootStore>(RootStore, {
-  lastTimestamp: primitive(),
-  saveInterval: primitive(),
-  cityStore: object(CityStore),
-});

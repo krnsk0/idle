@@ -2,18 +2,18 @@ import { action, computed, makeObservable, observable } from 'mobx';
 import { Building } from './building';
 import { BuildingNames, ResourceNames } from '../../gameData';
 import { Resource } from './resource';
-import type { RootStore } from '../rootStore';
+import type { GameState } from '../gameState';
 import type { s } from '../../semanticTypes';
 import { nanoid } from 'nanoid';
 import { createModelSchema, list, object, primitive } from 'serializr';
 
 export class City {
-  rootRef: RootStore;
+  rootRef: GameState;
   id: s.UUID;
   buildings: Building[] = [];
   resources: Resource[] = [];
 
-  constructor(rootRef: RootStore) {
+  constructor(rootRef: GameState) {
     this.rootRef = rootRef;
     this.id = nanoid();
 

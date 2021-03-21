@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import GameWithStore from './components/gameWithStore/gameWithStore';
+import { DebugPanel } from './components/debugPanel/debugPanel';
 import Game from './components/game/game';
 import './index.css';
+import { RootStoreProvider } from './store/useRootStore';
 
 ReactDOM.render(
   <React.StrictMode>
-    <GameWithStore />
+    <RootStoreProvider>
+      <Game />
+      <DebugPanel />
+    </RootStoreProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

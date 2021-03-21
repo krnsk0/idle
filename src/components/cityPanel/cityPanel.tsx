@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useRootStore } from '../../store/rootStoreContext';
+import { useRootStore } from '../../store/useRootStore';
 import type { s } from '../../semanticTypes';
 import styles from './cityPanel.module.scss';
 
@@ -9,7 +9,9 @@ type CityPanelProps = {
 };
 
 const CityPanel: FC<CityPanelProps> = observer(({ id }) => {
-  const { cityStore } = useRootStore();
+  const {
+    gameState: { cityStore },
+  } = useRootStore();
   const city = cityStore.getCityById(id);
 
   return (
