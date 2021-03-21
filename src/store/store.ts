@@ -33,6 +33,7 @@ export class Store {
       loadGame: action,
       clearSave: action,
       loadFromClipboard: action,
+      _startNewGame: action,
     });
   }
 
@@ -50,6 +51,14 @@ export class Store {
       this.saveGame();
       this.lastSaved = now;
     }
+  };
+
+  /**
+   * Helper for intiializing a new game state
+   */
+  _startNewGame = (): void => {
+    this.gameState = new GameState();
+    this.gameState.initializeNewGame();
   };
 
   /**
@@ -82,13 +91,12 @@ export class Store {
           }
         );
       } else {
-        this.gameState = new GameState();
-        this.gameState.initializeNewGame();
+        console.log('No save game found; starting new game');
+        this._startNewGame();
       }
     } catch (err) {
       console.error('loading error', err);
-      this.gameState = new GameState();
-      this.gameState.initializeNewGame();
+      this._startNewGame();
     }
   };
 
@@ -97,7 +105,7 @@ export class Store {
    */
   clearSave = (): void => {
     window.localStorage.removeItem(saveKey);
-    this.loadGame();
+    this._startNewGame();
   };
 
   /**
