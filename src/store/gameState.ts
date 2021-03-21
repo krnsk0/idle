@@ -27,6 +27,10 @@ export class GameState {
     });
   }
 
+  initializeNewGame(): void {
+    this.cityStore.addCity();
+  }
+
   tick(now: s.Milliseconds): void {
     // run child state ticks
     const delta = now - this.lastTimestamp;

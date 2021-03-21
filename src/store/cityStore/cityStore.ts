@@ -24,6 +24,7 @@ export class CityStore {
   }
 
   addCity(): void {
+    console.log('got here');
     this.cities.push(new City(this.rootRef));
   }
 

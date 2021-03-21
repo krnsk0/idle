@@ -22,6 +22,8 @@ export class Store {
 
   constructor() {
     this.gameState = new GameState();
+    this.gameState.initializeNewGame();
+
     this.lastSaved = Date.now();
 
     makeObservable(this, {
@@ -81,10 +83,12 @@ export class Store {
         );
       } else {
         this.gameState = new GameState();
+        this.gameState.initializeNewGame();
       }
     } catch (err) {
       console.error('loading error', err);
       this.gameState = new GameState();
+      this.gameState.initializeNewGame();
     }
   };
 
