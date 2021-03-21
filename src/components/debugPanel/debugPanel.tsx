@@ -7,25 +7,22 @@ import { saveKey } from '../../store/store';
 type DebugPanelProps = {};
 
 export const DebugPanel: FC<DebugPanelProps> = observer(() => {
-  const rootStore = useRootStore();
+  const { gameState, clearSave, copySave, loadFromClipboard } = useRootStore();
 
   return (
     <div className={styles.container}>
-      <button
-        type="button"
-        onClick={() => rootStore.gameState.cityStore.addCity()}
-      >
+      <button type="button" onClick={() => gameState.cityStore.addCity()}>
         add city
       </button>
-      {/* <button type="button" onClick={() => clearSave()}>
-          clear save
-        </button> */}
-      {/* <button type="button" onClick={() => copySave()}>
+      <button type="button" onClick={() => clearSave()}>
+        clear save
+      </button>
+      <button type="button" onClick={() => copySave()}>
         copy save string
-      </button> */}
-      {/* <button type="button" onClick={() => loadFromClipboard()}>
-          load from clipboard
-        </button> */}
+      </button>
+      <button type="button" onClick={() => loadFromClipboard()}>
+        load from clipboard
+      </button>
     </div>
   );
 });

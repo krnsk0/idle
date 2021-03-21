@@ -26,7 +26,10 @@ export class Store {
     makeObservable(this, {
       tick: action,
       gameState: observable,
+      saveGame: action,
       loadGame: action,
+      clearSave: action,
+      loadFromClipboard: action,
     });
   }
 
@@ -45,21 +48,21 @@ export class Store {
    * Serialize and save game state to local storage
    */
 
-  saveGame() {
+  saveGame = () => {
     try {
       const serialized = serialize(GameState, this.gameState);
       const json = JSON.stringify(serialized);
       window.localStorage.setItem(saveKey, json);
-      console.log('saved', serialized);
+      console.log('saved');
     } catch (err) {
       console.log('save error', err);
     }
-  }
+  };
 
   /**
    * Attempt to load save game from localstorage
    */
-  loadGame(): void {
+  loadGame = (): void => {
     try {
       const saveString = window.localStorage.getItem(saveKey);
       if (saveString) {
@@ -77,20 +80,20 @@ export class Store {
       console.error('loading error', err);
       this.gameState = new GameState();
     }
-  }
+  };
 
   /**
    * Clear the save and replace state with a new state
    */
-  clearSave(): void {
+  clearSave = (): void => {
     window.localStorage.removeItem(saveKey);
-    this.gameState = new GameState();
-  }
+    this.loadGame();
+  };
 
   /**
    * Attempt to load save from clipboard
    */
-  async loadFromClipboard(): Promise<void> {
+  loadFromClipboard = async (): Promise<void> => {
     try {
       const saveString = await window.navigator.clipboard.readText();
       window.localStorage.setItem(saveKey, saveString);
@@ -98,5 +101,27 @@ export class Store {
     } catch (err) {
       console.log('error loading from clipboard', err);
     }
-  }
+  };
+
+  /**
+   * Copy save game to clipboard
+   */
+  copySave = (): void => {
+    try {
+      const saveString = window.localStorage.getItem(saveKey);
+      if (saveString) {
+        const formattedSaveString = JSON.stringify(
+          JSON.parse(saveString),
+          null,
+          2
+        );
+        window.navigator.clipboard.writeText(formattedSaveString);
+        console.log('copied');
+      } else {
+        console.log('copy failed');
+      }
+    } catch (err) {
+      console.error('copy failed', err);
+    }
+  };
 }
