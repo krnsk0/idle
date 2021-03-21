@@ -6,7 +6,12 @@ import { GameState } from './gameState';
 export const saveKey = 'idleSave';
 
 /**
- * Root of state tree; top level contains timing/gameloop
+ * This is the root of the observable tree intended to be passed to
+ * the component tree via provider. Its main responsibilities relate
+ * to saving and loading game states.
+ *
+ * While this class is not itself serialized, it knows how to
+ * serialize and deserialize `gameState`. .
  */
 export class Store {
   // root of serialized game state
@@ -37,8 +42,9 @@ export class Store {
   }
 
   /**
-   * Serialize and save gameState
+   * Serialize and save game state to local storage
    */
+
   saveGame() {
     try {
       const serialized = serialize(GameState, this.gameState);
@@ -50,16 +56,13 @@ export class Store {
     }
   }
 
+  /**
+   * Attempt to load save game from localstorage
+   */
   loadGame(): void {
-    // attempt to load saved game
     try {
       const saveString = window.localStorage.getItem(saveKey);
       if (saveString) {
-        // monkeypatch to supress unhelpful warnings
-        const orignalConsoleWarn = console.warn;
-        console.warn = () => {};
-
-        // deserialize
         this.gameState = deserialize<GameState>(
           GameState,
           JSON.parse(saveString),
@@ -67,15 +70,33 @@ export class Store {
             if (err) console.error('Deserialization err: ', err);
           }
         );
-
-        // undo monekypatch
-        console.warn = orignalConsoleWarn;
       } else {
         this.gameState = new GameState();
       }
     } catch (err) {
       console.error('loading error', err);
       this.gameState = new GameState();
+    }
+  }
+
+  /**
+   * Clear the save and replace state with a new state
+   */
+  clearSave(): void {
+    window.localStorage.removeItem(saveKey);
+    this.gameState = new GameState();
+  }
+
+  /**
+   * Attempt to load save from clipboard
+   */
+  async loadFromClipboard(): Promise<void> {
+    try {
+      const saveString = await window.navigator.clipboard.readText();
+      window.localStorage.setItem(saveKey, saveString);
+      this.loadGame();
+    } catch (err) {
+      console.log('error loading from clipboard', err);
     }
   }
 }
