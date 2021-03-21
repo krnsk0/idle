@@ -9,7 +9,7 @@ type CityPanelProps = {
 };
 
 const CityPanel: FC<CityPanelProps> = observer(({ id }) => {
-  const hello2 = 'test';
+  const hello = 'test';
 
   const {
     gameState: { cityStore },
