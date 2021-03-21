@@ -27,22 +27,44 @@ export class Store {
     this.lastSaved = Date.now();
 
     makeObservable(this, {
-      tick: action,
-      gameState: observable,
-      saveGame: action,
-      loadGame: action,
-      clearSave: action,
-      loadFromClipboard: action,
       _startNewGame: action,
+      _tryGameStateDeserialize: action,
+      tick: action.bound,
+      gameState: observable,
+      saveGame: action.bound,
+      loadGame: action.bound,
+      clearSave: action.bound,
+      loadFromClipboard: action.bound,
+      copySave: action.bound,
+    });
+  }
+
+  /**
+   * Helper for intiializing a new game state
+   */
+  _startNewGame(): void {
+    this.gameState = new GameState();
+    this.gameState.initializeNewGame();
+  }
+
+  /**
+   * Helper for deserializing savegame strings. Caller must handle
+   * errors.
+   */
+  _tryGameStateDeserialize(saveString: string): GameState {
+    return deserialize<GameState>(GameState, JSON.parse(saveString), (err) => {
+      if (err) {
+        throw err;
+      }
     });
   }
 
   /**
    * Tick at this level handles saving, also delegating
-   * ticks to the next leafward node(s) in the tree. Almost
+   * ticks to the next node(s) in the tree. Almost
    * all tick functions expected to delegate in this way
    */
-  tick = (now: s.Milliseconds): void => {
+  tick(now: s.Milliseconds): void {
     this.gameState.tick(now);
 
     // run save if needed
@@ -51,21 +73,12 @@ export class Store {
       this.saveGame();
       this.lastSaved = now;
     }
-  };
-
-  /**
-   * Helper for intiializing a new game state
-   */
-  _startNewGame = (): void => {
-    this.gameState = new GameState();
-    this.gameState.initializeNewGame();
-  };
+  }
 
   /**
    * Serialize and save game state to local storage
    */
-
-  saveGame = () => {
+  saveGame(): void {
     try {
       const serialized = serialize(GameState, this.gameState);
       const json = JSON.stringify(serialized);
@@ -74,22 +87,16 @@ export class Store {
     } catch (err) {
       console.log('save error', err);
     }
-  };
+  }
 
   /**
    * Attempt to load save game from localstorage
    */
-  loadGame = (): void => {
+  loadGame(): void {
     try {
       const saveString = window.localStorage.getItem(saveKey);
       if (saveString) {
-        this.gameState = deserialize<GameState>(
-          GameState,
-          JSON.parse(saveString),
-          (err) => {
-            if (err) console.error('Deserialization err: ', err);
-          }
-        );
+        this.gameState = this._tryGameStateDeserialize(saveString);
       } else {
         console.log('No save game found; starting new game');
         this._startNewGame();
@@ -98,33 +105,32 @@ export class Store {
       console.error('loading error', err);
       this._startNewGame();
     }
-  };
+  }
 
   /**
    * Clear the save and replace state with a new state
    */
-  clearSave = (): void => {
+  clearSave(): void {
     window.localStorage.removeItem(saveKey);
     this._startNewGame();
-  };
+  }
 
   /**
    * Attempt to load save from clipboard
    */
-  loadFromClipboard = async (): Promise<void> => {
+  async loadFromClipboard(): Promise<void> {
     try {
       const saveString = await window.navigator.clipboard.readText();
-      window.localStorage.setItem(saveKey, saveString);
-      this.loadGame();
+      this.gameState = this._tryGameStateDeserialize(saveString);
     } catch (err) {
       console.log('error loading from clipboard', err);
     }
-  };
+  }
 
   /**
    * Copy save game to clipboard
    */
-  copySave = (): void => {
+  copySave(): void {
     try {
       const saveString = window.localStorage.getItem(saveKey);
       if (saveString) {
@@ -141,5 +147,5 @@ export class Store {
     } catch (err) {
       console.error('copy failed', err);
     }
-  };
+  }
 }
