@@ -1,4 +1,4 @@
-// semantic types
+/* eslint-disable @typescript-eslint/no-namespace */
 export namespace s {
   export type Milliseconds = number;
   export type UnitsPerSecond = number;

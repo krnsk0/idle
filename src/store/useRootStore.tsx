@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useContext } from 'react';
+import React, { createContext, useContext, FC } from 'react';
 import { Store } from './store';
 
 // singleton
@@ -6,16 +6,16 @@ let store: Store;
 
 export const StoreContext = createContext<Store | undefined>(undefined);
 
-export const RootStoreProvider = ({ children }: { children: ReactNode }) => {
+export const RootStoreProvider: FC = ({ children }) => {
   const root = store ?? new Store();
 
   return <StoreContext.Provider value={root}>{children}</StoreContext.Provider>;
 };
 
-export const useRootStore = () => {
-  const context = useContext(StoreContext);
-  if (context === undefined) {
+export const useRootStore = (): Store => {
+  const store = useContext(StoreContext);
+  if (store === undefined) {
     throw new Error('useRootStore must be used within provider');
   }
-  return context;
+  return store;
 };

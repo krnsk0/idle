@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import { Building } from './building';
 import { BuildingNames, ResourceNames } from '../../gameData';
 import { Resource } from './resource';

@@ -1,9 +1,8 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import {
   BuildingNames,
   initialBuildingBuildCosts,
   initialBuildingOutputs,
-  ResourceNames,
   tBuildingBuildCosts,
   tBuildingCostResourceRow,
   tBuildingOutput,
@@ -11,7 +10,7 @@ import {
 import type { s } from '../../semanticTypes';
 import type { City } from './city';
 import { deepCopy } from 'deep-copy-ts';
-import { createModelSchema, object, primitive, raw } from 'serializr';
+import { createModelSchema, primitive, raw } from 'serializr';
 import type { GameState } from '../gameState';
 
 export class Building {
@@ -61,7 +60,10 @@ export class Building {
     this.quantity += quantity;
   }
 
-  tick(delta: s.Milliseconds): void {}
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  tick(delta: s.Milliseconds): void {
+    // TODO
+  }
 }
 
 createModelSchema<Building>(

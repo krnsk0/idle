@@ -3,9 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useRootStore } from '../../store/useRootStore';
 import styles from './styles.module.scss';
 
-type DebugPanelProps = {};
-
-export const DebugPanel: FC<DebugPanelProps> = observer(() => {
+export const DebugPanel: FC = observer(() => {
   const { gameState, clearSave, copySave, loadFromClipboard } = useRootStore();
 
   return (
