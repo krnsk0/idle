@@ -9,51 +9,73 @@ export const saveKey = 'idleSave';
  * Root of state tree; top level contains timing/gameloop
  */
 export class Store {
-  lastTimestamp: s.Milliseconds;
-  lastSaved: s.Milliseconds;
-  saveInterval: s.Milliseconds = 1000;
-
   // root of serialized game state
   gameState: GameState;
+  lastSaved: s.Milliseconds;
 
   constructor() {
     // member initialization
     this.gameState = new GameState();
-
-    // initialize timestamps
-    this.lastTimestamp = performance.now();
-    this.lastSaved = performance.now();
+    this.lastSaved = Date.now();
 
     makeObservable(this, {
-      lastTimestamp: observable,
       tick: action,
+      gameState: observable,
+      loadGame: action,
     });
   }
 
   tick(now: s.Milliseconds): void {
-    // run child state ticks
-    const delta = now - this.lastTimestamp;
-    this.gameState.tick(delta);
-    this.lastTimestamp = now;
+    this.gameState.tick(now);
 
     // run save if needed
     const timeSinceSave = now - this.lastSaved;
-    if (timeSinceSave > this.saveInterval) {
-      this.save();
+    if (timeSinceSave > this.gameState.saveInterval) {
+      this.saveGame();
       this.lastSaved = now;
     }
   }
 
   /**
-   * Serialize and save; tell caller if succeeded
+   * Serialize and save gameState
    */
-  save() {
-    console.log('saved');
+  saveGame() {
     try {
-      const json = JSON.stringify(serialize(GameState, this.gameState));
+      const serialized = serialize(GameState, this.gameState);
+      const json = JSON.stringify(serialized);
       window.localStorage.setItem(saveKey, json);
+      console.log('saved', serialized);
     } catch (err) {
       console.log('save error', err);
+    }
+  }
+
+  loadGame(): void {
+    // attempt to load saved game
+    try {
+      const saveString = window.localStorage.getItem(saveKey);
+      if (saveString) {
+        // monkeypatch to supress unhelpful warnings
+        const orignalConsoleWarn = console.warn;
+        console.warn = () => {};
+
+        // deserialize
+        this.gameState = deserialize<GameState>(
+          GameState,
+          JSON.parse(saveString),
+          (err) => {
+            if (err) console.error('Deserialization err: ', err);
+          }
+        );
+
+        // undo monekypatch
+        console.warn = orignalConsoleWarn;
+      } else {
+        this.gameState = new GameState();
+      }
+    } catch (err) {
+      console.error('loading error', err);
+      this.gameState = new GameState();
     }
   }
 }

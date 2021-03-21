@@ -6,24 +6,17 @@ import CityPanel from '../cityPanel/cityPanel';
 import styles from './game.module.scss';
 
 const Game: FC = observer(() => {
-  const [animationFrameRequestId, setAnimationFrameRequestId] = useState(0);
   const rootStore = useRootStore();
 
-  const gameLoop = (now: s.Milliseconds) => {
-    rootStore.tick(now);
-    setAnimationFrameRequestId(window.requestAnimationFrame(gameLoop));
+  const gameLoop = () => {
+    rootStore.tick(Date.now());
+    window.requestAnimationFrame(gameLoop);
   };
 
-  /**
-   * Starts the game loop
-   * RootStore is provided to the dependencies array
-   * to make sure gameLoop restarts when save is cleared
-   * or overwritten
-   */
   useEffect(() => {
-    window.cancelAnimationFrame(animationFrameRequestId);
-    gameLoop(0);
-  }, [rootStore]);
+    rootStore.loadGame();
+    gameLoop();
+  }, []);
 
   return (
     <div className={styles.container}>

@@ -9,7 +9,6 @@ export const saveKey = 'idleSave';
  */
 export class GameState {
   lastTimestamp: s.Milliseconds;
-  lastSaved: s.Milliseconds;
   saveInterval: s.Milliseconds = 1000;
 
   // stores
@@ -20,8 +19,7 @@ export class GameState {
     this.cityStore = new CityStore(this);
 
     // initialize timestamps
-    this.lastTimestamp = performance.now();
-    this.lastSaved = performance.now();
+    this.lastTimestamp = Date.now();
 
     makeObservable(this, {
       lastTimestamp: observable,
@@ -34,13 +32,6 @@ export class GameState {
     const delta = now - this.lastTimestamp;
     this.cityStore.tick(delta);
     this.lastTimestamp = now;
-
-    // run save if needed
-    const timeSinceSave = now - this.lastSaved;
-    if (timeSinceSave > this.saveInterval) {
-      // this.save();
-      this.lastSaved = now;
-    }
   }
 }
 
