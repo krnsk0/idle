@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 import { serialize, deserialize } from 'serializr';
 import type { s } from '../semanticTypes';
 import './config';
@@ -121,7 +121,9 @@ export class Store {
   async loadFromClipboard(): Promise<void> {
     try {
       const saveString = await window.navigator.clipboard.readText();
-      this.gameState = this._tryGameStateDeserialize(saveString);
+      runInAction(() => {
+        this.gameState = this._tryGameStateDeserialize(saveString);
+      });
     } catch (err) {
       console.log('error loading from clipboard', err);
     }

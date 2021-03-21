@@ -15,10 +15,7 @@ export class GameState {
   cityStore: CityStore;
 
   constructor() {
-    // member initialization
     this.cityStore = new CityStore(this);
-
-    // initialize timestamps
     this.lastTimestamp = Date.now();
 
     makeObservable(this, {
@@ -32,10 +29,11 @@ export class GameState {
   }
 
   tick(now: s.Milliseconds): void {
-    // run child state ticks
     const delta = now - this.lastTimestamp;
-    this.cityStore.tick(delta);
     this.lastTimestamp = now;
+
+    // run child state ticks
+    this.cityStore.tick(delta);
   }
 }
 
