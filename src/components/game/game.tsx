@@ -6,21 +6,21 @@ import CityPanel from '../cityPanel/cityPanel';
 import styles from './game.module.scss';
 
 const Game: FC = observer(() => {
-  const rootStore = useRootStore();
+  const { gameState, loadGame, tick } = useRootStore();
 
   const gameLoop = () => {
-    rootStore.tick(Date.now());
+    tick(Date.now());
     window.requestAnimationFrame(gameLoop);
   };
 
   useEffect(() => {
-    rootStore.loadGame();
+    loadGame();
     gameLoop();
   }, []);
 
   return (
     <div className={styles.container}>
-      {rootStore.gameState.cityStore.cities.map((city) => {
+      {gameState.cityStore.cities.map((city) => {
         return <CityPanel id={city.id} key={city.id} />;
       })}
     </div>

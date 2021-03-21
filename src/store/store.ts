@@ -33,7 +33,7 @@ export class Store {
     });
   }
 
-  tick(now: s.Milliseconds): void {
+  tick = (now: s.Milliseconds): void => {
     this.gameState.tick(now);
 
     // run save if needed
@@ -42,7 +42,7 @@ export class Store {
       this.saveGame();
       this.lastSaved = now;
     }
-  }
+  };
 
   /**
    * Serialize and save game state to local storage
