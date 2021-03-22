@@ -24,7 +24,7 @@ export class CityStore {
   }
 
   addCity(): void {
-    this.cities.push(new City(this.rootRef));
+    this.cities.push(new City(this.rootRef, this));
   }
 
   getCityById = computedFn((id: s.UUID): City | undefined => {

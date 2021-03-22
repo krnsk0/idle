@@ -6,15 +6,18 @@ import type { GameState } from '../gameState';
 import type { s } from '../../semanticTypes';
 import { nanoid } from 'nanoid';
 import { createModelSchema, list, object, primitive } from 'serializr';
+import type { CityStore } from './cityStore';
 
 export class City {
   rootRef: GameState;
+  cityStoreRef: CityStore;
   id: s.UUID;
   buildings: Building[] = [];
   resources: Resource[] = [];
 
-  constructor(rootRef: GameState) {
+  constructor(rootRef: GameState, cityStoreRef: CityStore) {
     this.rootRef = rootRef;
+    this.cityStoreRef = cityStoreRef;
     this.id = nanoid();
 
     // initialize children
@@ -47,6 +50,9 @@ createModelSchema<City>(
     resources: list(object(Resource)),
   },
   (context) => {
-    return new City(context.rootContext.target);
+    return new City(
+      context.rootContext.target,
+      (<{ target: CityStore }>context.parentContext).target
+    );
   }
 );
