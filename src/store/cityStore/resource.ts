@@ -4,7 +4,6 @@ import type { s } from '../../semanticTypes';
 import type { City } from './city';
 import { createModelSchema, primitive } from 'serializr';
 import type { GameState } from '../gameState';
-import { tickSystem } from '../tickSystem';
 
 export class Resource {
   rootRef: GameState;
@@ -18,9 +17,6 @@ export class Resource {
     resourceName: ResourceNames,
     quantity: s.Units
   ) {
-    // make tickable
-    tickSystem.register(this);
-
     // member initialization
     this.rootRef = rootRef;
     this.cityRef = cityRef;

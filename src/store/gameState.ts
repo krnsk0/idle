@@ -1,45 +1,35 @@
-import { action, makeObservable, observable } from 'mobx';
+import { makeObservable, observable } from 'mobx';
 import { createModelSchema, object, primitive } from 'serializr';
 import { CityStore } from './cityStore/cityStore';
 import type { s } from '../semanticTypes';
-import { tickSystem } from './tickSystem';
 export const saveKey = 'idleSave';
 
 /**
  * Root of state tree; top level contains timing/gameloop
  */
 export class GameState {
-  lastTimestamp: s.Milliseconds;
+  lastSeenTimestamp: s.Milliseconds;
   saveInterval: s.Milliseconds = 1000;
 
   // stores
   cityStore: CityStore;
 
   constructor() {
-    // make tickable
-    tickSystem.register(this);
-
     this.cityStore = new CityStore(this);
-    this.lastTimestamp = Date.now();
+    this.lastSeenTimestamp = Date.now();
 
     makeObservable(this, {
-      lastTimestamp: observable,
-      tick: action,
+      lastSeenTimestamp: observable,
     });
   }
 
   initializeNewGame(): void {
     this.cityStore.addCity();
   }
-
-  tick(_: s.Milliseconds, now: s.Milliseconds): void {
-    const delta = now - this.lastTimestamp;
-    this.lastTimestamp = now;
-  }
 }
 
 createModelSchema<GameState>(GameState, {
-  lastTimestamp: primitive(),
+  lastSeenTimestamp: primitive(),
   saveInterval: primitive(),
   cityStore: object(CityStore),
 });

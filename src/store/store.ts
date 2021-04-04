@@ -3,7 +3,7 @@ import { serialize, deserialize } from 'serializr';
 import type { s } from '../semanticTypes';
 import './config';
 import { GameState } from './gameState';
-import { tickSystem } from './tickSystem';
+
 export const saveKey = 'idleSave';
 
 /**
@@ -71,8 +71,16 @@ export class Store {
       this.lastSaved = now;
     }
 
-    // call tick system
-    tickSystem.runTick(now);
+    // calculate delta
+    const delta = now - this.gameState.lastSeenTimestamp;
+    this.gameState.lastSeenTimestamp = now;
+
+    // execute ticks
+    this.gameState.cityStore.cities.forEach((city) => {
+      city.resources.forEach((resource) => {
+        resource.tick(delta);
+      });
+    });
   }
 
   /**
