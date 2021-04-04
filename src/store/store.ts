@@ -1,6 +1,8 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { serialize, deserialize } from 'serializr';
 import type { s } from '../semanticTypes';
+import type { City } from './cityStore/city';
+import type { Resource } from './cityStore/resource';
 import './config';
 import { GameState } from './gameState';
 
@@ -71,16 +73,7 @@ export class Store {
       this.lastSaved = now;
     }
 
-    // calculate delta
-    const delta = now - this.gameState.lastSeenTimestamp;
-    this.gameState.lastSeenTimestamp = now;
-
-    // execute ticks
-    this.gameState.cityStore.cities.forEach((city) => {
-      city.resources.forEach((resource) => {
-        resource.tick(delta);
-      });
-    });
+    this.gameState.tick(now);
   }
 
   /**
