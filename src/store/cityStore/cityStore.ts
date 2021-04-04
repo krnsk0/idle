@@ -14,13 +14,8 @@ export class CityStore {
 
     makeObservable(this, {
       cities: observable,
-      tick: action,
       addCity: action,
     });
-  }
-
-  tick(delta: s.Milliseconds): void {
-    Object.values(this.cities).map((city) => city.tick(delta));
   }
 
   addCity(): void {

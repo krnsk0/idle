@@ -2,6 +2,7 @@ import { action, makeObservable, observable } from 'mobx';
 import { createModelSchema, object, primitive } from 'serializr';
 import { CityStore } from './cityStore/cityStore';
 import type { s } from '../semanticTypes';
+import { tickSystem } from './tickSystem';
 export const saveKey = 'idleSave';
 
 /**
@@ -15,6 +16,9 @@ export class GameState {
   cityStore: CityStore;
 
   constructor() {
+    // make tickable
+    tickSystem.register(this);
+
     this.cityStore = new CityStore(this);
     this.lastTimestamp = Date.now();
 
@@ -28,12 +32,9 @@ export class GameState {
     this.cityStore.addCity();
   }
 
-  tick(now: s.Milliseconds): void {
+  tick(_: s.Milliseconds, now: s.Milliseconds): void {
     const delta = now - this.lastTimestamp;
     this.lastTimestamp = now;
-
-    // run child state ticks
-    this.cityStore.tick(delta);
   }
 }
 

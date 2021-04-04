@@ -3,6 +3,7 @@ import { serialize, deserialize } from 'serializr';
 import type { s } from '../semanticTypes';
 import './config';
 import { GameState } from './gameState';
+import { tickSystem } from './tickSystem';
 export const saveKey = 'idleSave';
 
 /**
@@ -60,19 +61,18 @@ export class Store {
   }
 
   /**
-   * Tick at this level handles saving, also delegating
-   * ticks to the next node(s) in the tree. Almost
-   * all tick functions expected to delegate in this way
+   * Tick at this level handles saving. Not called tick system
    */
   tick(now: s.Milliseconds): void {
-    this.gameState.tick(now);
-
     // run save if needed
     const timeSinceSave = now - this.lastSaved;
     if (timeSinceSave > this.gameState.saveInterval) {
       this.saveGame();
       this.lastSaved = now;
     }
+
+    // call tick system
+    tickSystem.runTick(now);
   }
 
   /**
