@@ -31,13 +31,7 @@ export class City {
     makeObservable(this, {
       buildings: observable,
       resources: observable,
-      tick: action,
     });
-  }
-
-  tick(delta: s.Milliseconds): void {
-    Object.values(this.buildings).map((building) => building.tick(delta));
-    Object.values(this.resources).map((resource) => resource.tick(delta));
   }
 }
 

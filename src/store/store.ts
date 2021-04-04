@@ -1,8 +1,11 @@
 import { action, makeObservable, observable, runInAction } from 'mobx';
 import { serialize, deserialize } from 'serializr';
 import type { s } from '../semanticTypes';
+import type { City } from './cityStore/city';
+import type { Resource } from './cityStore/resource';
 import './config';
 import { GameState } from './gameState';
+
 export const saveKey = 'idleSave';
 
 /**
@@ -60,19 +63,17 @@ export class Store {
   }
 
   /**
-   * Tick at this level handles saving, also delegating
-   * ticks to the next node(s) in the tree. Almost
-   * all tick functions expected to delegate in this way
+   * Tick at this level handles saving. Not called tick system
    */
   tick(now: s.Milliseconds): void {
-    this.gameState.tick(now);
-
     // run save if needed
     const timeSinceSave = now - this.lastSaved;
     if (timeSinceSave > this.gameState.saveInterval) {
       this.saveGame();
       this.lastSaved = now;
     }
+
+    this.gameState.tick(now);
   }
 
   /**

@@ -40,7 +40,6 @@ export class Building {
     makeObservable(this, {
       quantity: observable,
       buy: action,
-      tick: action,
       outputs: observable,
     });
   }
@@ -58,11 +57,6 @@ export class Building {
   buy(quantity: s.Units): void {
     // TODO: check and spend resources
     this.quantity += quantity;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  tick(delta: s.Milliseconds): void {
-    // TODO
   }
 }
 

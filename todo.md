@@ -41,4 +41,5 @@ wonders
 
 
 # TODO STACK - Sunday
-try doing serialization yourself
+"implements" keyword
+consider moving tick system singleton inside the store
